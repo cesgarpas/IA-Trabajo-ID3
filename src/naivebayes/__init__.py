@@ -28,4 +28,4 @@ class NaiveBayes:
             cat1_final_prob = cat1_final_prob * self.cat1_prob[string]
             cat2_final_prob = cat2_final_prob * self.cat2_prob[string]
 
-        return [self.cat1 if cat1_final_prob > cat2_final_prob else self.cat2, cat1_final_prob, cat2_final_prob]
+        return [self.cat1 if cat1_final_prob > cat2_final_prob else self.cat2, "P("+self.cat1+"): "+str(cat1_final_prob), "P("+ self.cat2+"): "+str(cat2_final_prob)]
