@@ -1,8 +1,6 @@
 from naivebayes import NaiveBayes
 from vertex import Vertex
-from id3 import get_data
 
-get_data()
 
 # Naive Bayes
 probSi = {"color-red": 0.8, "color-green": 0.2, "size-big": 0.5, "size-small": 0.5}

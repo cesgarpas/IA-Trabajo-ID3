@@ -14,9 +14,22 @@ class NaiveBayes:
         self.cat2_prob = cat2_prob
 
     # Implementación del algoritmo NaiveBayes
-    # def __init__(self, dataset): # Children => {valorAtributo:vertice, valorAtributo:True/False}
-    #     self.attribute = attribute
-    #     self.children = children
+    def __init__(self, rows): # Children => {valorAtributo:vertice, valorAtributo:True/False}
+        # Obtenemos las categorías
+        cats = []
+        for row in rows:
+            if row[-1] not in cats:
+                cats.append(row[-1])
+            if len(cats) == 2:
+                break
+        self.cat1 = cats[0]
+        self.cat2 = cats[1]
+
+        #Obtenemos las probabilidades
+        for x in range(len(rows[0])-1):
+            for row in rows:
+                asdf=1
+
 
     def clasify_nb(self, example):  # {atributo:valorAtributo, atributo:valorAtributo}
 
