@@ -6,9 +6,12 @@ import csv
 
 
 def create_tree():
-    rows = get_data('../datasets/tic-tac-toe.data.csv')
+    # rows = get_data('../datasets/tic-tac-toe.data.csv')
+    rows = get_data('../datasets/pruebas.data.csv')
 
-    naive = NaiveBayes(rows)
+    naive = NaiveBayes(rows, 1)
+
+    print(naive.clasify_nb({"continente": "asia", "lugar": "ciudad", "actividad": "opera", "precio": "alto"}))
 
     # print(recursion(rows))
 

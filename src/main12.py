@@ -3,8 +3,8 @@ from vertex import Vertex
 
 
 # Naive Bayes
-probSi = {"color-red": 0.8, "color-green": 0.2, "size-big": 0.5, "size-small": 0.5}
-probNo = {"color-red": 0.3, "color-green": 0.7, "size-big": 0.4, "size-small": 0.6}
+probSi = {"Sí": 0.4, "color-red": 0.8, "color-green": 0.2, "size-big": 0.5, "size-small": 0.5}
+probNo = {"No": 0.6, "color-red": 0.3, "color-green": 0.7, "size-big": 0.4, "size-small": 0.6}
 naivebayesV = NaiveBayes("Sí", "No", probSi, probNo)
 
 # Vertices ID3

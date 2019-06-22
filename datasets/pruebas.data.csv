@@ -1,0 +1,11 @@
+continente,lugar,actividad,precio,compra
+europa,playa,museos,alto,si
+africa,lago,museos,bajo,si
+africa,ciudad,opera,bajo,si
+africa,ciudad,opera,bajo,si
+africa,playa,museos,bajo,no
+europa,playa,opera,bajo,no
+asia,lago,senderismo,bajo,no
+asia,playa,senderismo,bajo,no
+europa,playa,opera,alto,no
+africa,playa,opera,bajo,no
