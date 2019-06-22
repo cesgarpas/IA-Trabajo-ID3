@@ -6,15 +6,23 @@ class NaiveBayes:
     cat1_prob = {}
     cat2_prob = {}
 
+    def __init__(self, *args, **kwargs):
+        if len(args) == 4:
+            self.initialize_processed(args[0], args[1], args[2], args[3])
+        elif len(args) == 2:
+            self.initialize_raw(args[0], args[1])
+        else:
+            print("Input data not valid")
+
     # cat1Prob => {atributo-valorAtributo:probabilidad, atributo-valorAtributo:probabilidad}
-    def __init__(self, cat1, cat2, cat1_prob, cat2_prob):
+    def initialize_processed(self, cat1, cat2, cat1_prob, cat2_prob):
         self.cat1 = cat1
         self.cat2 = cat2
         self.cat1_prob = cat1_prob
         self.cat2_prob = cat2_prob
 
     # Implementación del algoritmo NaiveBayes
-    def __init__(self, rows, k):       # Children => {valorAtributo:vertice, valorAtributo:True/False}
+    def initialize_raw(self, rows, k):
         # Obtenemos las categorías
         cats = {}
         for row in rows[1:]:
@@ -64,13 +72,11 @@ class NaiveBayes:
                 cat1_prob[attr[x] + "-" + att_value] = (cat1_count + k) / (a + k * len(att_values))
                 cat2_prob[attr[x] + "-" + att_value] = (cat2_count + k) / (b + k * len(att_values))
 
-        self.cat1_prob = cat1_prob
-        self.cat2_prob = cat2_prob
+        self.cat1_prob, self.cat2_prob = cat1_prob, cat2_prob
 
     def clasify_nb(self, example):  # {atributo:valorAtributo, atributo:valorAtributo}
 
-        cat1_final_prob = self.cat1_prob[self.cat1]
-        cat2_final_prob = self.cat2_prob[self.cat2]
+        cat1_final_prob, cat2_final_prob = self.cat1_prob[self.cat1], self.cat2_prob[self.cat2]
 
         for x in example:
             string = x + "-" + example[x]
