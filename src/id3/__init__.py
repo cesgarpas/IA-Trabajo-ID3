@@ -6,39 +6,118 @@ import csv
 
 
 def create_tree():
-    # rows = get_data('../datasets/tic-tac-toe.data.csv')
+
+    print("Dataset: ejercicio.data.csv")
     rows = get_data('../datasets/pruebas.data.csv')
-    # rows = get_data('../datasets/pruebas2.data.csv')
-
-    naive_bayes = NaiveBayes(rows, 1)  # K = 1
-
-    # print(naive_bayes.clasify_nb({"continente": "asia", "lugar": "ciudad", "actividad": "opera", "precio": "alto"}))
-
+    naive_bayes = NaiveBayes(rows, 0)  # K = 1
     tree = recursion_base(rows, 4, naive_bayes, [])
 
-    clasify_helper(tree, naive_bayes,
-                   {"continente": "africa", "lugar": "ciudad", "actividad": "opera", "precio": "bajo"})
-    clasify_helper(tree, naive_bayes,
-                   {"continente": "africa", "lugar": "ciudad", "actividad": "opera", "precio": "bajo"})
-    clasify_helper(tree, naive_bayes,
-                   {"continente": "asia", "lugar": "lago", "actividad": "senderismo", "precio": "bajo"})
-    clasify_helper(tree, naive_bayes,
-                   {"continente": "europa", "lugar": "playa", "actividad": "opera", "precio": "bajo"})
-    clasify_helper(tree, naive_bayes,
-                   {"continente": "asia", "lugar": "lago", "actividad": "senderismo", "precio": "bajo"})
+    classify_helper(tree, naive_bayes,
+                    {"continente": "africa", "lugar": "ciudad", "actividad": "opera", "precio": "bajo"})
+    classify_helper(tree, naive_bayes,
+                    {"continente": "africa", "lugar": "ciudad", "actividad": "opera", "precio": "bajo"})
+    classify_helper(tree, naive_bayes,
+                    {"continente": "asia", "lugar": "lago", "actividad": "senderismo", "precio": "bajo"})
+    classify_helper(tree, naive_bayes,
+                    {"continente": "europa", "lugar": "playa", "actividad": "opera", "precio": "bajo"})
+    classify_helper(tree, naive_bayes,
+                    {"continente": "asia", "lugar": "lago", "actividad": "senderismo", "precio": "bajo"})
 
 
-def clasify_helper(tree, naive_bayes, example):
+
+
+    print("Dataset: tic-tac-toe.data.csv")
+    rows = get_data('../datasets/tic-tac-toe.data.csv')
+    naive_bayes = NaiveBayes(rows, 0)  # K = 1
+    tree = recursion_base(rows, 20, naive_bayes, [])
+
+    classify_helper(tree, naive_bayes,
+                    {"AA": "x",
+                        "AB": "x",
+                        "AC": "x",
+                        "BA": "b",
+                        "BB": "b",
+                        "BC": "b",
+                        "CA": "b",
+                        "CB": "b",
+                        "CC": "b"})
+
+    classify_helper(tree, naive_bayes,
+                    {"AA": "x",
+                        "AB": "x",
+                        "AC": "x",
+                        "BA": "o",
+                        "BB": "o",
+                        "BC": "b",
+                        "CA": "b",
+                        "CB": "b",
+                        "CC": "b"})
+
+    classify_helper(tree, naive_bayes,
+                    {"AA": "b",
+                        "AB": "b",
+                        "AC": "b",
+                        "BA": "b",
+                        "BB": "o",
+                        "BC": "o",
+                        "CA": "x",
+                        "CB": "x",
+                        "CC": "x"})
+
+    classify_helper(tree, naive_bayes,
+                    {"AA": "x",
+                        "AB": "x",
+                        "AC": "o",
+                        "BA": "x",
+                        "BB": "x",
+                        "BC": "o",
+                        "CA": "o",
+                        "CB": "b",
+                        "CC": "o"})
+
+
+
+
+    print("Dataset: car.data")
+    rows = get_data('../datasets/car.data', "acc", "unacc", "accuracy")
+    naive_bayes = NaiveBayes(rows, 0)  # K = 1
+    tree = recursion_base(rows, 100, naive_bayes, [])
+
+    classify_helper(tree, naive_bayes,
+                    {"buying": "vhigh",
+                        "maint": "high",
+                        "doors": "4",
+                        "persons": "4",
+                        "lug_boot": "med",
+                        "safety": "med"})
+
+    classify_helper(tree, naive_bayes,
+                    {"buying": "high",
+                        "maint": "high",
+                        "doors": "4",
+                        "persons": "4",
+                        "lug_boot": "med",
+                        "safety": "med"})
+
+    classify_helper(tree, naive_bayes,
+                    {"buying": "vhigh",
+                        "maint": "high",
+                        "doors": "4",
+                        "persons": "4",
+                        "lug_boot": "med",
+                        "safety": "low"})
+
+
+def classify_helper(tree, naive_bayes, example):
     classification = tree.clasify(example)
-
     if classification is None:
-        classification = naive_bayes.clasify(
-            {"continente": "asia", "lugar": "lago", "actividad": "senderismo", "precio": "bajo"})
+        classification = naive_bayes.clasify(example)
         print("No se pudo clasificar con ID3, se clasificará con Naive Bayes", classification)
     elif type(classification) is type([]):
-        print("Rama truncada por el quorum, se clasificará con Naive Bayes")
+        print("Rama truncada por el quorum, se clasificará con Naive Bayes", classification)
     else:
         print("Clasificación por ID3:", classification)
+
 
 def recursion_base(rows, quorum, naive_bayes, used_attributes):
     # Calculamos la entropía del conjunto inicial
@@ -146,12 +225,25 @@ def column_entropy(rows):
     return get_entropy(values[0], values[1])
 
 
-def get_data(filename):
-    with open(filename, newline='') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+def get_data(filename, cat1=None, cat2=None, cat_name=None):
+
+    if filename.split(".")[-1] == "csv":
+        with open(filename, newline='') as csvfile:
+            spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+            row_data = []
+            for row in spamreader:
+                split = row[0].split(",")
+                row_data.append(split)
+            return row_data
+    elif filename.split(".")[-1] == "data":
+        f = open(filename, "r")
         row_data = []
-        for row in spamreader:
-            split = row[0].split(",")
-            row_data.append(split)
+        for row in f:
+            split = row.split(",")
+            # Eliminamos el salto de linea ala ultimo
+            split[-1] = split[-1][:-1]
+            # Binarizamos
+            if split[-1] == cat1 or split[-1] == cat2 or split[-1] == cat_name:
+                row_data.append(split)
         return row_data
 
