@@ -9,51 +9,59 @@ def create_tree():
     # rows = get_data('../datasets/tic-tac-toe.data.csv')
     rows = get_data('../datasets/pruebas.data.csv')
 
-    naive = NaiveBayes(rows, 1)
+    naive = NaiveBayes(rows, 1)  # K = 1
 
-    print(naive.clasify_nb({"continente": "asia", "lugar": "ciudad", "actividad": "opera", "precio": "alto"}))
+    # print(naive.clasify_nb({"continente": "asia", "lugar": "ciudad", "actividad": "opera", "precio": "alto"}))
 
     # print(recursion(rows))
 
 
-def recursion(rows):
+def recursion(rows, quorum, naive_bayes, entropy, used_attributes):
     # Calculamos la entropía del conjunto inicial
-    initial_entropy = column_entropy(rows)
+    data_entropy = column_entropy(rows)
+
+    # Vemos qué tipo de vértice tenemos que crear
+    if data_entropy == 0:
+        return rows[1][-1]
+    elif (len(rows) - 1) < quorum:
+        return naive_bayes
+    else:
+        return Vertex(rows, quorum, naive_bayes, data_entropy, used_attributes)
 
     # Calculamos las ganancias para cada atributo, parando si se encuentra una ganancia máxima
-    for x in range(len(rows[0]) - 1):
-        # Ganancia inicial
-        gain = initial_entropy
+    # for x in range(len(rows[0]) - 1):
+    #     # Ganancia inicial
+    #     gain = initial_entropy
+    #
+    #     # Obtenemos para cada valor del atributo, el valor de la última columna
+    #     dict = {}
+    #     for row in rows:
+    #         if row[x] not in dict:
+    #             dict[row[x]] = []
+    #         else:
+    #             dict[row[x]].append(row[-1])
+    #
+    #     # Contamos para cada valor del atributo, el numero de positivos y negativos
+    #     for value in dict:
+    #         # Lista de positivos y negativos para el valor del atributo
+    #         posneg = dict[value]
+    #         dict2 = {}
+    #         # Contamos y lo añadimos a un diccionario
+    #         for item in posneg:
+    #             if item not in dict2:
+    #                 dict2[item] = 1
+    #             else:
+    #                 dict2[item] = dict2[item] + 1
+    #
+    #         # Obtenemos el numero de positivos y negativos
+    #         posneglist = []
+    #         for item in dict2:
+    #             posneglist.append(dict2[item])
+    #
+    #         # Calculamos la ganancia
+    #         gain = gain - (((posneglist[0] + posneglist[1]) / len(rows)) * entropy(posneglist[0], posneglist[1]))
 
-        # Obtenemos para cada valor del atributo, el valor de la última columna
-        dict = {}
-        for row in rows:
-            if row[x] not in dict:
-                dict[row[x]] = []
-            else:
-                dict[row[x]].append(row[-1])
-
-        # Contamos para cada valor del atributo, el numero de positivos y negativos
-        for value in dict:
-            # Lista de positivos y negativos para el valor del atributo
-            posneg = dict[value]
-            dict2 = {}
-            # Contamos y lo añadimos a un diccionario
-            for item in posneg:
-                if item not in dict2:
-                    dict2[item] = 1
-                else:
-                    dict2[item] = dict2[item] + 1
-
-            # Obtenemos el numero de positivos y negativos
-            posneglist = []
-            for item in dict2:
-                posneglist.append(dict2[item])
-
-            # Calculamos la ganancia
-            gain = gain - (((posneglist[0] + posneglist[1]) / len(rows)) * entropy(posneglist[0], posneglist[1]))
-
-    return initial_entropy
+    # return initial_entropy
 
 
 def entropy(x,y):
@@ -68,17 +76,15 @@ def entropy(x,y):
 
 def column_entropy(rows):
     dict = {}
-    for row in rows:
+    for row in rows[1:]:
         if row[-1] not in dict:
             dict[row[-1]] = 1
         else:
             dict[row[-1]] = dict[row[-1]] + 1
 
-    keys = []
-    for item in dict:
-        keys.append(item)
+    values = list(dict.values())
 
-    return entropy(dict[keys[0]], dict[keys[1]])
+    return entropy(values[0], values[1])
 
 
 def get_data(filename):
