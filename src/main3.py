@@ -1,3 +1,3 @@
-from id3 import get_data, entropy, create_tree
+from id3 import create_tree
 
 create_tree()
