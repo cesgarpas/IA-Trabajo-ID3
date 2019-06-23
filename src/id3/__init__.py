@@ -9,59 +9,75 @@ def create_tree():
     # rows = get_data('../datasets/tic-tac-toe.data.csv')
     rows = get_data('../datasets/pruebas.data.csv')
 
-    naive = NaiveBayes(rows, 1)  # K = 1
+    naive_bayes = NaiveBayes(rows, 1)  # K = 1
 
-    # print(naive.clasify_nb({"continente": "asia", "lugar": "ciudad", "actividad": "opera", "precio": "alto"}))
+    print(naive.clasify_nb({"continente": "asia", "lugar": "ciudad", "actividad": "opera", "precio": "alto"}))
 
-    # print(recursion(rows))
+    print(recursion_base(rows, 10, naive_bayes, []))
 
 
-def recursion(rows, quorum, naive_bayes, entropy, used_attributes):
+def recursion_base(rows, quorum, naive_bayes, used_attributes):
     # Calculamos la entropía del conjunto inicial
     data_entropy = column_entropy(rows)
 
     # Vemos qué tipo de vértice tenemos que crear
-    if data_entropy == 0:
+    if data_entropy == 0:               # Hoja-categoría
         return rows[1][-1]
-    elif (len(rows) - 1) < quorum:
+    elif (len(rows) - 1) < quorum:      # Hoja-truncada
         return naive_bayes
-    else:
-        return Vertex(rows, quorum, naive_bayes, data_entropy, used_attributes)
+    else:                               # Nodo interior
+        return recursion_continue(rows, quorum, naive_bayes, used_attributes, data_entropy)
 
-    # Calculamos las ganancias para cada atributo, parando si se encuentra una ganancia máxima
-    # for x in range(len(rows[0]) - 1):
-    #     # Ganancia inicial
-    #     gain = initial_entropy
-    #
-    #     # Obtenemos para cada valor del atributo, el valor de la última columna
-    #     dict = {}
-    #     for row in rows:
-    #         if row[x] not in dict:
-    #             dict[row[x]] = []
-    #         else:
-    #             dict[row[x]].append(row[-1])
-    #
-    #     # Contamos para cada valor del atributo, el numero de positivos y negativos
-    #     for value in dict:
-    #         # Lista de positivos y negativos para el valor del atributo
-    #         posneg = dict[value]
-    #         dict2 = {}
-    #         # Contamos y lo añadimos a un diccionario
-    #         for item in posneg:
-    #             if item not in dict2:
-    #                 dict2[item] = 1
-    #             else:
-    #                 dict2[item] = dict2[item] + 1
-    #
-    #         # Obtenemos el numero de positivos y negativos
-    #         posneglist = []
-    #         for item in dict2:
-    #             posneglist.append(dict2[item])
-    #
-    #         # Calculamos la ganancia
-    #         gain = gain - (((posneglist[0] + posneglist[1]) / len(rows)) * entropy(posneglist[0], posneglist[1]))
 
-    # return initial_entropy
+def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
+    # Buscamos el atributo con mayor ganancia
+    best_attr = None
+    best_attr_gain = 0.0
+    best_attr_values = []
+
+    # Para cada atributo
+    for x in range(len(rows[0])-1):
+        # Si el atributo aun no se ha usado para clasificar
+        if rows[0][x] not in used_attributes:
+            # Extraemos los valores del atributo
+            attr_values = []
+            for row in rows[1:]:
+                attr_values.append(row[x])
+            attr_values = list(set(attr_values))
+
+            # Creamos la ganancia inicial a partir de la entropía
+            gain = entropy
+
+            # Iteramos los valores
+            for attr_value in attr_values:
+                # Extraemos los positivos y negativos para el valor del atributo
+                count = {}
+                for row in rows[1:]:
+                    if row[x] == attr_value:
+                        if row[-1] not in count:
+                            count[row[-1]] = 1
+                        else:
+                            count[row[-1]] = count[row[-1]] + 1
+                # Calculamos su entropía
+                posneg_values = list(count.values())
+                attr_value_entropy = entropy(posneg_values[0], posneg_values[1])
+                # Restamos a la ganancia el número de valores / total de ejemplos * entropía valor
+                gain -= ((posneg_values[0] + posneg_values[1]) / (len(rows)-1)) * attr_value_entropy
+
+            # Si la ganancia es mayor a la almacenada, almacenamos esta y el atributo
+            if gain > best_attr_gain:
+                best_attr_gain = gain
+                best_attr = rows[0][x]
+                best_attr_values = attr_values
+
+    # Se añade el atributo elegido a los usados
+    new_used_attributes = used_attributes
+    new_used_attributes.append(best_attr)
+
+    children = {}
+    for attr_value in best_attr_values:
+        children[attr_value] = recursion_base(rows, quorum, naive_bayes, new_used_attributes)
+    return Vertex(children, best_attr)
 
 
 def entropy(x,y):
