@@ -74,6 +74,16 @@ def create_tree():
                         "CA": "o",
                         "CB": "b",
                         "CC": "o"})
+    classify_helper(tree, naive_bayes,
+                    {"AA": "o",
+                        "AB": "x",
+                        "AC": "o",
+                        "BA": "o",
+                        "BB": "x",
+                        "BC": "x",
+                        "CA": "o",
+                        "CB": "x",
+                        "CC": "b"})
 
 
 
