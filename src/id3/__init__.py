@@ -1,5 +1,6 @@
 from naivebayes import NaiveBayes
 from vertex import Vertex
+import random
 
 from math import log
 import csv
@@ -7,128 +8,69 @@ import csv
 
 def create_tree(dataset, train_percent, quorum, quorum_type, k):
 
-    print(dataset,train_percent,quorum,quorum_type,k)
+    # Salida
+    output = ""
 
-    print("Dataset: ejercicio.data.csv")
-    rows = get_data('datasets/ejercicio1.data.csv')
-    naive_bayes = NaiveBayes(rows, 0)  # K = 1
-    tree = recursion_base(rows, 4, naive_bayes, [])
+    # Obtencion de la dirección del archivo del dataset
+    switcher = {
+        "ttt": "datasets/tic-tac-toe.data.csv",
+        "car": "datasets/car.data",
+        "krkp": "datasets/kr-vs-kp.data.csv",
+        "ex": "datasets/ejercicio1.data.csv",
+    }
+    filename = switcher[dataset]
+    output += "Dataset: " + str(filename) + "\n"
+    output += "Suavizado (K): " + str(k) + "\n"
 
-    classify_helper(tree, naive_bayes,
-                    {"continente": "africa", "lugar": "ciudad", "actividad": "opera", "precio": "bajo"})
-    classify_helper(tree, naive_bayes,
-                    {"continente": "africa", "lugar": "ciudad", "actividad": "opera", "precio": "bajo"})
-    classify_helper(tree, naive_bayes,
-                    {"continente": "asia", "lugar": "lago", "actividad": "senderismo", "precio": "bajo"})
-    classify_helper(tree, naive_bayes,
-                    {"continente": "europa", "lugar": "playa", "actividad": "opera", "precio": "bajo"})
-    classify_helper(tree, naive_bayes,
-                    {"continente": "asia", "lugar": "lago", "actividad": "senderismo", "precio": "bajo"})
+    # Obtención conjunto de datos
+    rows = get_data(filename)
 
+    # Calculo del quorum si es necesario
+    if quorum_type == "percent":
+        final_quorum = int((len(rows)-1) * (int(quorum)/100))
+    else:
+        final_quorum = int(quorum)
 
+    output += "Quorum: " + str(final_quorum) + "\n\n"
 
+    # TODO: Dividir en entrenamiento y prueba homogeneamente
+    eighty = int((len(rows)-1) * (int(train_percent)/100))
+    shuffled = rows[1:]
+    random.shuffle(shuffled)
+    train_rows = shuffled[:eighty]
+    train_rows.insert(0, rows[0])
+    test_rows = shuffled[eighty:]
 
-    print("Dataset: tic-tac-toe.data.csv")
-    rows = get_data('datasets/tic-tac-toe.data.csv')
-    naive_bayes = NaiveBayes(rows, 0)  # K = 1
-    tree = recursion_base(rows, 20, naive_bayes, [])
+    output += "Tamaño del conjunto total: " + str(len(rows)) + "\n"
+    output += "Tamaño del conjunto de entrenamiento: " + str(len(train_rows)) + "\n"
+    output += "Tamaño del conjunto de pruebas: " + str(len(test_rows)) + "\n\n"
 
-    classify_helper(tree, naive_bayes,
-                    {"AA": "x",
-                        "AB": "x",
-                        "AC": "x",
-                        "BA": "b",
-                        "BB": "b",
-                        "BC": "b",
-                        "CA": "b",
-                        "CB": "b",
-                        "CC": "b"})
+    # Creación del arbol
+    naive_bayes = NaiveBayes(train_rows, int(k))
+    tree = recursion_base(train_rows, final_quorum, naive_bayes, [])
 
-    classify_helper(tree, naive_bayes,
-                    {"AA": "x",
-                        "AB": "x",
-                        "AC": "x",
-                        "BA": "o",
-                        "BB": "o",
-                        "BC": "b",
-                        "CA": "b",
-                        "CB": "b",
-                        "CC": "b"})
+    # Pruebas
+    attributes = rows[0][:-1]
+    for row in test_rows:
+        row_dict = {}
+        for x in range(len(attributes)):
+            row_dict[attributes[x]] = row[x]
 
-    classify_helper(tree, naive_bayes,
-                    {"AA": "b",
-                        "AB": "b",
-                        "AC": "b",
-                        "BA": "b",
-                        "BB": "o",
-                        "BC": "o",
-                        "CA": "x",
-                        "CB": "x",
-                        "CC": "x"})
+        output += str(row_dict) + "\n"
+        output += classify_helper(tree, naive_bayes, row_dict) + "\n\n"
 
-    classify_helper(tree, naive_bayes,
-                    {"AA": "x",
-                        "AB": "x",
-                        "AC": "o",
-                        "BA": "x",
-                        "BB": "x",
-                        "BC": "o",
-                        "CA": "o",
-                        "CB": "b",
-                        "CC": "o"})
-    classify_helper(tree, naive_bayes,
-                    {"AA": "o",
-                        "AB": "x",
-                        "AC": "o",
-                        "BA": "o",
-                        "BB": "x",
-                        "BC": "x",
-                        "CA": "o",
-                        "CB": "x",
-                        "CC": "b"})
-
-
-
-
-    print("Dataset: car.data")
-    rows = get_data('datasets/car.data', "acc", "unacc", "accuracy")
-    naive_bayes = NaiveBayes(rows, 0)  # K = 1
-    tree = recursion_base(rows, 100, naive_bayes, [])
-
-    classify_helper(tree, naive_bayes,
-                    {"buying": "vhigh",
-                        "maint": "high",
-                        "doors": "4",
-                        "persons": "4",
-                        "lug_boot": "med",
-                        "safety": "med"})
-
-    classify_helper(tree, naive_bayes,
-                    {"buying": "high",
-                        "maint": "high",
-                        "doors": "4",
-                        "persons": "4",
-                        "lug_boot": "med",
-                        "safety": "med"})
-
-    classify_helper(tree, naive_bayes,
-                    {"buying": "vhigh",
-                        "maint": "high",
-                        "doors": "4",
-                        "persons": "4",
-                        "lug_boot": "med",
-                        "safety": "low"})
+    return output
 
 
 def classify_helper(tree, naive_bayes, example):
     classification = tree.clasify(example)
     if classification is None:
         classification = naive_bayes.clasify(example)
-        print("No se pudo clasificar con ID3, se clasificará con Naive Bayes", classification)
+        return "No se pudo clasificar con ID3, se clasificará con Naive Bayes: " + str(classification)
     elif type(classification) is type([]):
-        print("Rama truncada por el quorum, se clasificará con Naive Bayes", classification)
+        return "Rama truncada por el quorum, se clasificará mediante Naive Bayes: " + str(classification)
     else:
-        print("Clasificación por ID3:", classification)
+        return "Clasificación por ID3: " + str(classification)
 
 
 def recursion_base(rows, quorum, naive_bayes, used_attributes):
@@ -212,7 +154,7 @@ def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
     return Vertex(children, best_attr)
 
 
-def get_entropy(x,y):
+def get_entropy(x, y):
     if x == 0 or y == 0:
         return 0.0
     var1 = x/(x+y)
@@ -237,7 +179,7 @@ def column_entropy(rows):
     return get_entropy(values[0], values[1])
 
 
-def get_data(filename, cat1=None, cat2=None, cat_name=None):
+def get_data(filename):
 
     if filename.split(".")[-1] == "csv":
         with open(filename, newline='') as csvfile:
@@ -247,7 +189,7 @@ def get_data(filename, cat1=None, cat2=None, cat_name=None):
                 split = row[0].split(",")
                 row_data.append(split)
             return row_data
-    elif filename.split(".")[-1] == "data":
+    elif filename.split(".")[-1] == "data":     # Para cars que no están correctos los datos
         f = open(filename, "r")
         row_data = []
         for row in f:
@@ -255,7 +197,6 @@ def get_data(filename, cat1=None, cat2=None, cat_name=None):
             # Eliminamos el salto de linea ala ultimo
             split[-1] = split[-1][:-1]
             # Binarizamos
-            if split[-1] == cat1 or split[-1] == cat2 or split[-1] == cat_name:
+            if split[-1] == "acc" or split[-1] == "unacc" or split[-1] == "accuracy":
                 row_data.append(split)
         return row_data
-

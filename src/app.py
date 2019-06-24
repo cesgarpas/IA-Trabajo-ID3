@@ -13,8 +13,8 @@ def form():
     if request.method == 'POST':
         data = request.form.to_dict()
         print(data)
-        create_tree(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"])
-        return "Correcto!"
+        result = create_tree(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"])
+        return render_template('result.html', result=result)
     else:
         print("GET")
         return render_template('form.html')
