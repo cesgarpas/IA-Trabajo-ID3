@@ -25,7 +25,7 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k):
     # Obtención conjunto de datos
     rows = get_data(filename)
 
-    # Calculo del quorum si es necesario
+    # Calculo del quorum si es porcentual
     if quorum_type == "percent":
         final_quorum = int((len(rows)-1) * (int(quorum)/100))
     else:
@@ -51,15 +51,48 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k):
 
     # Pruebas
     attributes = rows[0][:-1]
+    output2 = "\n\n\n================== TODAS LAS PRUEBAS ==================\n\n"
+    hits = 0
+    miss = 0
+    none = 0
+    trunc = 0
+    id3 = 0
+
     for row in test_rows:
+        # Mapeado a el formato de nuestro clasificador
         row_dict = {}
         for x in range(len(attributes)):
             row_dict[attributes[x]] = row[x]
 
-        output += str(row_dict) + "\n"
-        output += "Valor esperado: " + str(row[-1]) + "\n"
-        output += classify_helper(tree, naive_bayes, row_dict) + "\n\n"
+        # Conteo de aciertos
+        expected = str(row[-1])
+        classification, result, leaf = classify_helper(tree, naive_bayes, row_dict)
+        if expected == result:
+            hits += 1
+        else:
+            miss += 1
 
+        # Conteo de hojas
+        if leaf == "none":
+            none += 1
+        elif leaf == "trunc":
+            trunc += 1
+        else:
+            id3 += 1
+
+        # Generación de la salida
+        output2 += str(row_dict) + "\n"
+        output2 += "Valor esperado: " + expected + "\n"
+        output2 += classification + "\n\n"
+    output += "Aciertos: " + str(hits) + "\n"
+    output += "Fallos: " + str(miss) + "\n"
+    output += "Porcentaje de acierto: " + str(hits / (hits + miss)) + "\n\n"
+
+    output += "Resultados hojas categoría: " + str(id3) + "\n"
+    output += "Resultados hojas truncadas: " + str(trunc) + "\n"
+    output += "Resultados hojas fallidas: " + str(none) + "\n\n"
+
+    output += output2
     return output
 
 
@@ -67,11 +100,11 @@ def classify_helper(tree, naive_bayes, example):
     classification = tree.clasify(example)
     if classification is None:
         classification = naive_bayes.clasify(example)
-        return "No se pudo clasificar con ID3, se clasificará con Naive Bayes: " + str(classification)
+        return "No se pudo clasificar con ID3, se clasificará con Naive Bayes: " + str(classification), classification[0], "none"
     elif type(classification) is type([]):
-        return "Rama truncada por el quorum, se clasificará mediante Naive Bayes: " + str(classification)
+        return "Rama truncada por el quorum, se clasificará mediante Naive Bayes: " + str(classification), classification[0], "trunc"
     else:
-        return "Clasificación por ID3: " + str(classification)
+        return "Clasificación por ID3: " + str(classification), classification, "id3"
 
 
 def recursion_base(rows, quorum, naive_bayes, used_attributes):
