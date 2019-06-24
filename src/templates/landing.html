@@ -42,10 +42,29 @@
 <section class="section">
     <div class="container is-fullhd">
         <div class="notification">
-            <p class="is-size-2">Grande</p>
-            <p class="is-size-6">Pequeño</p>
-            <p><strong>Negrita</strong> <i>cursiva</i><sub>subindice</sub><sup>superindice</sup></p>
-            <p class="is-size-1">Escribir <strong>introducción</strong> a la página.</p>
+                        <p class="is-size-2">Funcionalidad de la web</p><br>
+            <p class="is-size-6"> La página web ofrece dos funcionalidades.<br>
+                                  En el apartado <strong>implementación</strong>, se resuelve el algoritmo solicitado, creando el árbol mixto solicitado, y muestra el porcentaje de acierto.<br>
+                                  &nbsp&nbsp&nbsp&nbsp&nbsp Dado el conjunto de datos, seleccionamos cuántos pertenecerán al conjunto de pruebas, dando la posibilidad de barajar el conjunto,<br>
+                                  &nbsp&nbsp&nbsp&nbsp&nbsp creando un conjunto aleatorio del conjunto original.<br>
+                                  &nbsp&nbsp&nbsp&nbsp&nbsp Para aplicar un determinado <strong>quórum</strong> al conjunto de entrenamiento, se da la opción de aplicar el <strong>quórum</strong> usando un número entero o un porcentaje del total de ejemplos. <br>
+                &nbsp&nbsp&nbsp&nbsp&nbsp A la hora de aplicar el algoritmo <strong>Naive Bayes</strong>, se ofrece la posibilidad de usar el <strong> suavizado de LaPlace(k)</strong><br><br>
+            <p class="is-size-6"> En el apartado <strong>Pruebas</strong>, dado un conjunto de datos, un porcentaje para el conjunto de entrenamiento, un número de arboles para cada salida, se obtiene gráficas mostrando</p>
+                                    los aciertos, variando el quórum o la K del suavizado de LaPlace<br><br>
+            <p class="is-size-2">Introducción al problema</p><br>
+            <p class="is-size-6">Mediante esta página web, se pretende mostrar de una forma visual y ordenada la solución al problema <strong>ID3 - NaiveBayes</strong></p><br>
+            <p class="is-size-6">El algoritmo ID3 es un ejemplo de aprendizaje supervisado, donde se construye un árbol de decisión consistente con un conjunto de ejemplos de entrenamiento.<br>
+                                A medida que se van añadiendo nodos al árbol, los ejemplos se van repartiendo entre las ramas (en función del valor del atributo que ha sido elegido como nodo),<br>
+                                pudiendo darse el caso de que alguna rama incluso se quede sin ningún ejemplo.<br><br></p>
+
+
+           <p class="is-size-6"> El objetivo principal de esta propuesta es implementar una versión modificada del algoritmo ID3 que incluya un parámetro inicial que imponga un <strong>quórum</strong><br>
+                                (es decir, una cantidad mínima de ejemplos) que queramos imponer para que las ramas del árbol sean “fiables”.<br>
+                                En los casos en que tras una ramificación el número de ejemplos restantes sea inferior al <strong>quórum</strong>, entonces en lugar de continuar con la ejecución del <strong>algoritmo ID3</strong>, <br>
+                                se añadirá al árbol en esa rama un nodo hoja que invoque una llamada al algoritmo <strong>Naive Bayes</strong></p><br><br>
+
+
+
         </div>
     </div>
 </section>
