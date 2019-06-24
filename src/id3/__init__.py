@@ -41,8 +41,8 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k):
     train_rows.insert(0, rows[0])
     test_rows = shuffled[eighty:]
 
-    output += "Tamaño del conjunto total: " + str(len(rows)) + "\n"
-    output += "Tamaño del conjunto de entrenamiento: " + str(len(train_rows)) + "\n"
+    output += "Tamaño del conjunto total: " + str(len(rows)-1) + "\n"
+    output += "Tamaño del conjunto de entrenamiento: " + str(len(train_rows)-1) + "\n"
     output += "Tamaño del conjunto de pruebas: " + str(len(test_rows)) + "\n\n"
 
     # Creación del arbol
@@ -57,6 +57,7 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k):
             row_dict[attributes[x]] = row[x]
 
         output += str(row_dict) + "\n"
+        output += "Valor esperado: " + str(row[-1]) + "\n"
         output += classify_helper(tree, naive_bayes, row_dict) + "\n\n"
 
     return output
