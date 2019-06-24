@@ -13,7 +13,6 @@ def hello_world():
 def form():
     if request.method == 'POST':
         data = request.form.to_dict()
-        print(data)
 
         # Obtención del valor de barajar
         shuffle = True
@@ -26,7 +25,6 @@ def form():
         result = create_tree(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"], shuffle)
         return render_template('result.html', result=result)
     else:
-        print("GET")
         return render_template('form.html')
 
 
