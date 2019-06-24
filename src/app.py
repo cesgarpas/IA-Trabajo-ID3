@@ -14,7 +14,16 @@ def form():
     if request.method == 'POST':
         data = request.form.to_dict()
         print(data)
-        result = create_tree(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"])
+
+        # Obtención del valor de barajar
+        shuffle = True
+        try:
+            data["shuffle"]
+        except:
+            shuffle = False
+
+        # Llamada al algoritmo
+        result = create_tree(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"], shuffle)
         return render_template('result.html', result=result)
     else:
         print("GET")

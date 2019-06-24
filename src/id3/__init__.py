@@ -6,7 +6,7 @@ from math import log
 import csv
 
 
-def create_tree(dataset, train_percent, quorum, quorum_type, k):
+def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
 
     # Salida
     output = ""
@@ -33,23 +33,46 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k):
 
     output += "Quorum: " + str(final_quorum) + "\n\n"
 
-    # TODO: Dividir en entrenamiento y prueba homogeneamente
-    eighty = int((len(rows)-1) * (int(train_percent)/100))
-    shuffled = rows[1:]
-    random.shuffle(shuffled)
-    train_rows = shuffled[:eighty]
-    train_rows.insert(0, rows[0])
-    test_rows = shuffled[eighty:]
+    # ------ Conjuntos de entrenamiento y pruebas ------
+    # Se separan los conjuntos en positivos y negativos
+    pos_rows = []
+    neg_rows = []
+    posvalue = rows[1][-1]  # Uno de los dos valores binarios
 
+    for row in rows[1:]:
+        if row[-1] == posvalue:
+            pos_rows.append(row)
+        else:
+            neg_rows.append(row)
+
+    # Obtención del índice de división
+    pos_percentile = int((len(pos_rows)) * (int(train_percent)/100))
+    neg_percentile = int((len(neg_rows)) * (int(train_percent) / 100))
+
+    # Barajado
+    if shuffle:
+        random.shuffle(pos_rows)
+        random.shuffle(neg_rows)
+
+    # Creación de los conjuntos
+    train_rows = pos_rows[:pos_percentile] + neg_rows[:neg_percentile]
+    test_rows = pos_rows[pos_percentile:] + neg_rows[neg_percentile:]
+
+    # Inserción de los nombre de los atributos al conjunto de entrenamiento
+    train_rows.insert(0, rows[0])
+
+    # Salida de los conjuntos
     output += "Tamaño del conjunto total: " + str(len(rows)-1) + "\n"
     output += "Tamaño del conjunto de entrenamiento: " + str(len(train_rows)-1) + "\n"
     output += "Tamaño del conjunto de pruebas: " + str(len(test_rows)) + "\n\n"
 
+    # ------ Ejecución ------
     # Creación del arbol
     naive_bayes = NaiveBayes(train_rows, int(k))
     tree = recursion_base(train_rows, final_quorum, naive_bayes, [])
 
-    # Pruebas
+    # ------ Pruebas ------
+    # Salida y contadores para pruebas
     attributes = rows[0][:-1]
     output2 = "\n\n\n================== TODAS LAS PRUEBAS ==================\n\n"
     hits = 0
@@ -84,6 +107,8 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k):
         output2 += str(row_dict) + "\n"
         output2 += "Valor esperado: " + expected + "\n"
         output2 += classification + "\n\n"
+
+    # Salida de los resultados
     output += "Aciertos: " + str(hits) + "\n"
     output += "Fallos: " + str(miss) + "\n"
     output += "Porcentaje de acierto: " + str(hits / (hits + miss)) + "\n\n"
@@ -93,6 +118,7 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k):
     output += "Resultados hojas fallidas: " + str(none) + "\n\n"
 
     output += output2
+
     return output
 
 
