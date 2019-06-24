@@ -8,7 +8,7 @@ import csv
 def create_tree():
 
     print("Dataset: ejercicio.data.csv")
-    rows = get_data('../datasets/pruebas.data.csv')
+    rows = get_data('../datasets/ejercicio1.data.csv')
     naive_bayes = NaiveBayes(rows, 0)  # K = 1
     tree = recursion_base(rows, 4, naive_bayes, [])
 
