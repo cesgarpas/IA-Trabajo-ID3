@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Introduzca los datos</title>
+    <link rel="icon" type="image/png" href="../static/images/logos/flask.png">
+    <link rel="stylesheet" href="../static/css/bulma.min.css">
+    <script defer src="../static/css/all.js"></script>
+</head>
+<body>
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+            <img src="../static/images/logos/bulma-logo-white.png" width="112" height="28">
+        </a>
+
+        <a class="navbar-item" href="http://flask.pocoo.org/" style="margin-left: 10px">
+            <img src="../static/images/logos/logo-flask-recortado.png" width="24" height="40">
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu" style="margin-left: 20px">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Inicio
+            </a>
+
+            <a class="navbar-item" href="/form">
+                Implementación
+            </a>
+        </div>
+        <div class="navbar-end">
+            <a class="navbar-item" href="/about">
+                Acerca de..
+            </a>
+        </div>
+    </div>
+</nav>
+
+
+<section class="section">
+    <div class="container is-fullhd">
+        <div class="notification">
+            <p class="is-size-4" style="margin-bottom: 20px">
+                Rellene los siguientes datos comunes y continue la siguiente sección.
+            </p>
+            <form action="/testing" method="post">
+
+                <label class="label">Conjunto de datos</label>
+                <div class="select" style="width: 100%; margin-bottom: 20px">
+                    <select name="dataset" style="width: 100%;" required>
+                        <option value="">Seleccione el conjunto</option>
+                        <option value="ttt">Tic Tac Toe (958 ejemplos)</option>
+                        <option value="car">Coches (1594 ejemplos)</option>
+                        <option value="krkp">KR vs KP (3196 ejemplos)</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label class="label">Conjunto de entrenamiento (Porcentaje para dividir entrenamiento y
+                        prueba)</label>
+                    <div class="control">
+                        <input class="input" type="number" name="train" value="80"
+                               placeholder="Porcentaje de los datos para entrenamiento" required>
+                    </div>
+                    <label class="checkbox" style="margin-top: 10px">
+                      <input type="checkbox" name="shuffle">
+                      ¿Barajar?
+                    </label>
+                </div>
+
+                <div class="field" style="margin-bottom: 30px">
+                    <label class="label">
+                        En caso de haber marcado barajar, número de salidas para hacer media (Se crean varios arboles, se prueba y se hace la media a los resultados).
+                    </label>
+                    <div class="control">
+                        <input class="input" type="number" name="trees" value="1" placeholder="Result outputs" required>
+                    </div>
+                </div>
+
+                <!-- --------------------------------------------------------------------------------------------- -->
+                <hr style="display: block; height: 1px;border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;"/>
+                <hr style="display: block; height: 1px;border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;"/>
+                <p class="is-size-4" style="margin-bottom: 20px">
+                    Seleccione los datos a variar para extraer los resultados.
+                </p>
+                <div class="field">
+                    <label class="label">Seleccione parámetro a variar</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="vary" value="quorum" checked>
+                            Variar Quorum
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="vary" value="naive">
+                            Variar Naive Bayes
+                        </label>
+                    </div>
+                </div>
+
+                <!-- --------------------------------------------------------------------------------------------- -->
+                <hr style="display: block; height: 1px;border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;"/>
+                <p class="is-size-5" style="margin-bottom: 20px">
+                    Si ha marcado "Variar Quorum" rellene los datos siguientes
+                </p>
+                <div class="field">
+                    <label class="label">Quorum mínimo</label>
+                    <div class="control">
+                        <input class="input" type="number" name="quorum_min" value="0" placeholder="Quórum mínimo" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Quorum máximo</label>
+                    <div class="control">
+                        <input class="input" type="number" name="quorum_max" value="100" placeholder="Quórum máximo" required>
+                    </div>
+                </div>
+                <div class="field" style="margin-bottom: 20px">
+                    <label class="label">¿Quorum entero o porcentaje del total de ejemplos?</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="quorum_quorum_type" value="int">
+                            Entero
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="quorum_quorum_type" value="percent" checked>
+                            Porcentual
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">No. de saltos entero para intervalo (Ej: Para Quorum entre 1 y 50, Salto:3 => 1,4,7,10...49)</label>
+                    <div class="control">
+                        <input class="input" type="number" name="quorum_interval" placeholder="Salto" value="1" required>
+                    </div>
+                </div>
+
+                <div class="field" style="margin-bottom: 30px">
+                    <label class="label">Suavizado Naive Bayes(K)</label>
+                    <div class="control">
+                        <input class="input" type="number" name="quorum_k" value="0" placeholder="Valor para la K" required>
+                    </div>
+                </div>
+
+                <!-- --------------------------------------------------------------------------------------------- -->
+                <hr style="display: block; height: 1px;border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0;"/>
+                <p class="is-size-5" style="margin-bottom: 20px">
+                    Si ha marcado "Variar Naive Bayes" rellene los datos siguientes
+                </p>
+
+                <div class="field">
+                    <label class="label">K mínima</label>
+                    <div class="control">
+                        <input class="input" type="number" name="k_min" value="0" placeholder="K mínima" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">K máxima</label>
+                    <div class="control">
+                        <input class="input" type="number" name="k_max" value="4" placeholder="K máxima" required>
+                    </div>
+                </div>
+
+                <div class="field" style="margin-bottom: 30px">
+                    <label class="label">Quorum</label>
+                    <div class="control">
+                        <input class="input" type="number" name="k_quorum" value="10" placeholder="Valor para Quorum" required>
+                    </div>
+                </div>
+                <div class="field" style="margin-bottom: 20px">
+                    <label class="label">¿Quorum entero o porcentaje del total de ejemplos?</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="k_quorum_type" value="int">
+                            Entero
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="k_quorum_type" value="percent" checked>
+                            Porcentual
+                        </label>
+                    </div>
+                </div>
+
+                <!-- --------------------------------------------------------------------------------------------- -->
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link" type="submit">Continuar</button>
+                    </div>
+                    <div class="control">
+                        <a class="button is-text" href="/">Atrás</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -32,5 +32,25 @@ def form():
     else:
         return render_template('form.html')
 
+@app.route('/testing', methods=['GET', 'POST'])
+def testing():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+
+        # Obtención del valor de barajar
+        shuffle = True
+        try:
+            data["shuffle"]
+        except:
+            shuffle = False
+
+        print(data)
+
+        # Llamada al algoritmo
+        #result, info = create_tree(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"], shuffle)
+        return render_template('testing_form.html')
+    else:
+        return render_template('testing_form.html')
+
 
 
