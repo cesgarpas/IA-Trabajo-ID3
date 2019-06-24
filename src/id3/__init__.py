@@ -75,8 +75,12 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
     # Salida y contadores para pruebas
     attributes = rows[0][:-1]
     output2 = "\n\n\n================== TODAS LAS PRUEBAS ==================\n\n"
-    hits = 0
-    miss = 0
+    hits_none = 0
+    hits_trunc = 0
+    hits_id3 = 0
+    miss_none = 0
+    miss_trunc = 0
+    miss_id3 = 0
     none = 0
     trunc = 0
     id3 = 0
@@ -90,36 +94,66 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
         # Conteo de aciertos
         expected = str(row[-1])
         classification, result, leaf = classify_helper(tree, naive_bayes, row_dict)
-        if expected == result:
-            hits += 1
-        else:
-            miss += 1
 
         # Conteo de hojas
         if leaf == "none":
             none += 1
+            if expected == result:
+                hits_none += 1
+            else:
+                miss_none += 1
         elif leaf == "trunc":
             trunc += 1
+            if expected == result:
+                hits_trunc += 1
+            else:
+                miss_trunc += 1
         else:
             id3 += 1
+            if expected == result:
+                hits_id3 += 1
+            else:
+                miss_id3 += 1
 
         # Generación de la salida
         output2 += str(row_dict) + "\n"
         output2 += "Valor esperado: " + expected + "\n"
         output2 += classification + "\n\n"
 
-    # Salida de los resultados
+    # ------ Salida de los resultados ------
+    # Porcentaje de acierto total
+    hits = hits_id3 + hits_none + hits_trunc
+    miss = miss_id3 + miss_none + miss_trunc
+    hit_percent = hits / (hits + miss)
+
     output += "Aciertos: " + str(hits) + "\n"
     output += "Fallos: " + str(miss) + "\n"
-    output += "Porcentaje de acierto: " + str(hits / (hits + miss)) + "\n\n"
+    output += "Porcentaje de acierto: " + str(hit_percent) + "\n\n"
 
-    output += "Resultados hojas categoría: " + str(id3) + "\n"
-    output += "Resultados hojas truncadas: " + str(trunc) + "\n"
-    output += "Resultados hojas fallidas: " + str(none) + "\n\n"
+    # Porcentaje de acierto por tipo de hoja
+    id3_total = hits_id3 + miss_id3
+    id3_hit_percent = 0 if id3_total == 0 else hits_id3 / id3_total
 
+    trunc_total = hits_trunc + miss_trunc
+    trunc_hit_percent = 0 if trunc_total == 0 else hits_trunc / trunc_total
+
+    none_total = hits_none + miss_none
+    none_hit_percent = 0 if none_total == 0 else hits_none / none_total
+
+    output += "No. Resultados hojas categoría: " + str(id3) + "\n"
+    output += "Porcentaje de acierto hojas categoría: " + str(id3_hit_percent) + "\n\n"
+    output += "No. Resultados hojas truncadas: " + str(trunc) + "\n"
+    output += "Porcentaje de acierto hojas truncadas: " + str(trunc_hit_percent) + "\n\n"
+    output += "No. Resultados hojas fallidas: " + str(none) + "\n"
+    output += "Porcentaje de acierto hojas fallidas: " + str(none_hit_percent) + "\n\n"
+
+    # Concatenación final y output
     output += output2
 
-    return output
+    return output, {"hits": hits, "miss": miss, "hit_percent": hit_percent,
+                    "id3_count": id3, "id3_hit_percent": id3_hit_percent,
+                    "trunc_count": trunc, "trunc_hit_percent": trunc_hit_percent,
+                    "none_count": none, "none_hit_percent": none_hit_percent}
 
 
 def classify_helper(tree, naive_bayes, example):

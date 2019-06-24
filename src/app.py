@@ -8,6 +8,7 @@ app = Flask(__name__)
 def hello_world():
     return render_template('landing.html')
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -26,7 +27,7 @@ def form():
             shuffle = False
 
         # Llamada al algoritmo
-        result = create_tree(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"], shuffle)
+        result, info = create_tree(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"], shuffle)
         return render_template('result.html', result=result)
     else:
         return render_template('form.html')
