@@ -5,10 +5,12 @@ from math import log
 import csv
 
 
-def create_tree():
+def create_tree(dataset, train_percent, quorum, quorum_type, k):
+
+    print(dataset,train_percent,quorum,quorum_type,k)
 
     print("Dataset: ejercicio.data.csv")
-    rows = get_data('../datasets/ejercicio1.data.csv')
+    rows = get_data('datasets/ejercicio1.data.csv')
     naive_bayes = NaiveBayes(rows, 0)  # K = 1
     tree = recursion_base(rows, 4, naive_bayes, [])
 
@@ -27,7 +29,7 @@ def create_tree():
 
 
     print("Dataset: tic-tac-toe.data.csv")
-    rows = get_data('../datasets/tic-tac-toe.data.csv')
+    rows = get_data('datasets/tic-tac-toe.data.csv')
     naive_bayes = NaiveBayes(rows, 0)  # K = 1
     tree = recursion_base(rows, 20, naive_bayes, [])
 
@@ -89,7 +91,7 @@ def create_tree():
 
 
     print("Dataset: car.data")
-    rows = get_data('../datasets/car.data', "acc", "unacc", "accuracy")
+    rows = get_data('datasets/car.data', "acc", "unacc", "accuracy")
     naive_bayes = NaiveBayes(rows, 0)  # K = 1
     tree = recursion_base(rows, 100, naive_bayes, [])
 
