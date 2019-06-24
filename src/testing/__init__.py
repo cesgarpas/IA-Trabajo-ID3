@@ -68,7 +68,7 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
                    list(hit_percent.values()))
         # Cuenta de hojas
         save_graph(int(quorum_min), int(quorum_max), int(quorum_interval), "quorum (" + quorum_quorum_type + ")",
-                   "hojas (int)", "Número de hojas en funcion al quorum", "quorum_leaf_count",
+                   "no. hojas (int)", "Número de hojas en funcion al quorum", "quorum_leaf_count",
                    list(leaf_count2["id3"].values()), list(leaf_count2["trunc"].values()),
                    list(leaf_count2["none"].values()))
         # Ratio de acierto por tipo de hoja
@@ -84,7 +84,9 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
     else:
         hit_percent = {}
         leaf_count = {}
+        leaf_count2 = {"id3": {}, "trunc": {}, "none": {}}
         leaf_hit_percent = {}
+        leaf_hit_percent2 = {"id3": {}, "trunc": {}, "none": {}}
         for k_vary in range(int(k_min), int(k_max) + 1):
             print("K", k_vary)
 
@@ -121,11 +123,41 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
                 "id3": id3_count_acc / int(trees),
                 "trunc": trunc_count_acc / int(trees),
                 "none": none_count_acc / int(trees)}
+            leaf_count2["id3"][k_vary] = id3_count_acc/int(trees)
+            leaf_count2["trunc"][k_vary] = trunc_count_acc/int(trees)
+            leaf_count2["none"][k_vary] = none_count_acc/int(trees)
             leaf_hit_percent[k_vary] = {
                 "id3": 0 if int(trees) == id3_empty_count else id3_hit_percent_acc / (int(trees) - id3_empty_count),
                 "trunc": 0 if int(trees) == trunc_empty_count else trunc_hit_percent_acc / (
                             int(trees) - trunc_empty_count),
                 "none": 0 if int(trees) == none_empty_count else none_hit_percent_acc / (int(trees) - none_empty_count)}
+            leaf_hit_percent2["id3"][k_vary] = 0 if int(trees) == id3_empty_count else id3_hit_percent_acc/(
+                    int(trees)-id3_empty_count)
+            leaf_hit_percent2["trunc"][k_vary] = 0 if int(trees) == trunc_empty_count else trunc_hit_percent_acc/(
+                    int(trees)-trunc_empty_count)
+            leaf_hit_percent2["none"][k_vary] = 0 if int(trees) == none_empty_count else none_hit_percent_acc/(
+                    int(trees)-none_empty_count)
+
+        # =========== Gráficas ===========
+        # Ratio de acierto
+        save_graph(int(k_min), int(k_max), 1, "K (int)",
+                   "hit rate (ratio)", "Ratio de acierto en funcion a K", "k_hit_rate",
+                   list(hit_percent.values()))
+        # Cuenta de hojas
+        save_graph(int(k_min), int(k_max), 1, "K (int)",
+                   "no. hojas (int)", "Número de hojas en funcion a K", "k_leaf_count",
+                   list(leaf_count2["id3"].values()), list(leaf_count2["trunc"].values()),
+                   list(leaf_count2["none"].values()))
+        # Ratio de acierto por tipo de hoja
+        save_graph(int(k_min), int(k_max), 1, "K (int)",
+                   "ID3 hit rate (ratio)", "Ratio de acierto de id3 en funcion a K",
+                   "k_id3_hit_rate", list(leaf_hit_percent2["id3"].values()))
+        save_graph(int(k_min), int(k_max), 1, "K (int)",
+                   "truncated leafs hit rate (ratio)", "Ratio de acierto de hojas truncadas en funcion a K",
+                   "k_trunc_hit_rate", list(leaf_hit_percent2["trunc"].values()))
+        save_graph(int(k_min), int(k_max), 1, "K (int)",
+                   "failed leafs hit rate (ratio)", "Ratio de acierto de hojas fallidas en funcion a K",
+                   "k_none_hit_rate", list(leaf_hit_percent2["none"].values()))
 
     return str(hit_percent) + "\n\n" + str(leaf_count) + "\n\n" + str(leaf_hit_percent)
 
@@ -137,6 +169,7 @@ def get_results(dataset, train_percent, quorum, quorum_type, k, shuffle):
     except:
         return get_results(dataset, train_percent, quorum, quorum_type, k, shuffle)
     return info
+
 
 def save_graph(x1, x2, x3, xlabel, ylabel, title, filename, y1, y2=None, y3=None):
     # Data for plotting
