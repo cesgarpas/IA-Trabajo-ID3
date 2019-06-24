@@ -8,160 +8,124 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
-  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-      </a>
-
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <a class="navbar-item" href="/">
-          Inicio
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+          <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
         </a>
 
-        <!--<a class="navbar-item">-->
-          <!--Documentation-->
-        <!--</a>-->
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
 
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            Más
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="/">
+            Inicio
           </a>
 
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              Acerca de...
+          <a class="navbar-item" href="/form">
+            Implementación
+          </a>
+
+          <!--<a class="navbar-item">-->
+            <!--Documentation-->
+          <!--</a>-->
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Más
             </a>
-            <!--<a class="navbar-item">-->
-              <!--Jobs-->
-            <!--</a>-->
-            <!--<a class="navbar-item">-->
-              <!--Contact-->
-            <!--</a>-->
-            <!--<hr class="navbar-divider">-->
-            <!--<a class="navbar-item">-->
-              <!--Report an issue-->
-            <!--</a>-->
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item">
+                Acerca de...
+              </a>
+              <!--<a class="navbar-item">-->
+                <!--Jobs-->
+              <!--</a>-->
+              <!--<a class="navbar-item">-->
+                <!--Contact-->
+              <!--</a>-->
+              <!--<hr class="navbar-divider">-->
+              <!--<a class="navbar-item">-->
+                <!--Report an issue-->
+              <!--</a>-->
+            </div>
           </div>
         </div>
-      </div>
-      <!--<div class="navbar-end">-->
-        <!--<div class="navbar-item">-->
+        <!--<div class="navbar-end">-->
+          <!--<div class="navbar-item">-->
+          <!--</div>-->
         <!--</div>-->
-      <!--</div>-->
-    </div>
-  </nav>
-
-
-
-  <section class="section">
-    <div class="container is-fullhd">
-      <div class="notification">
-        <h1>Introduzca los datos y proceda.</h1>
-        <form action="/form" method="post">
-          <div class="field">
-            <label class="label">Name</label>
-            <div class="control">
-              <input class="input" type="text" name="Nombre" placeholder="Text input">
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Name</label>
-            <div class="control">
-              <input class="input" type="text" name="Apellido" placeholder="Text apellido">
-            </div>
-          </div>
-
-          <!--<input type="text" value="" name="Nombre">-->
-
-          <!--<div class="field">-->
-            <!--<label class="label">Username</label>-->
-            <!--<div class="control has-icons-left has-icons-right">-->
-              <!--<input class="input is-success" type="text" placeholder="Text input" value="bulma">-->
-              <!--<span class="icon is-small is-left">-->
-                <!--<i class="fas fa-user"></i>-->
-              <!--</span>-->
-              <!--<span class="icon is-small is-right">-->
-                <!--<i class="fas fa-check"></i>-->
-              <!--</span>-->
-            <!--</div>-->
-            <!--<p class="help is-success">This username is available</p>-->
-          <!--</div>-->
-
-          <!--<div class="field">-->
-            <!--<label class="label">Email</label>-->
-            <!--<div class="control has-icons-left has-icons-right">-->
-              <!--<input class="input is-danger" type="email" placeholder="Email input" value="hello@">-->
-              <!--<span class="icon is-small is-left">-->
-                <!--<i class="fas fa-envelope"></i>-->
-              <!--</span>-->
-              <!--<span class="icon is-small is-right">-->
-                <!--<i class="fas fa-exclamation-triangle"></i>-->
-              <!--</span>-->
-            <!--</div>-->
-            <!--<p class="help is-danger">This email is invalid</p>-->
-          <!--</div>-->
-
-          <!--<div class="field">-->
-            <!--<label class="label">Subject</label>-->
-            <!--<div class="control">-->
-              <!--<div class="select">-->
-                <!--<select>-->
-                  <!--<option>Select dropdown</option>-->
-                  <!--<option>With options</option>-->
-                <!--</select>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="field">-->
-            <!--<label class="label">Message</label>-->
-            <!--<div class="control">-->
-              <!--<textarea class="textarea" placeholder="Textarea"></textarea>-->
-            <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="field">-->
-            <!--<div class="control">-->
-              <!--<label class="checkbox">-->
-                <!--<input type="checkbox">-->
-                <!--I agree to the <a href="#">terms and conditions</a>-->
-              <!--</label>-->
-            <!--</div>-->
-          <!--</div>-->
-
-          <!--<div class="field">-->
-            <!--<div class="control">-->
-              <!--<label class="radio">-->
-                <!--<input type="radio" name="question">-->
-                <!--Yes-->
-              <!--</label>-->
-              <!--<label class="radio">-->
-                <!--<input type="radio" name="question">-->
-                <!--No-->
-              <!--</label>-->
-            <!--</div>-->
-          <!--</div>-->
-
-          <div class="field is-grouped">
-            <div class="control">
-              <button class="button is-link" type="submit">Submit</button>
-            </div>
-            <div class="control">
-              <button class="button is-text">Cancel</button>
-            </div>
-          </div>
-        </form>
       </div>
-    </div>
-  </section>
+    </nav>
+
+
+
+    <section class="section">
+      <div class="container is-fullhd">
+        <div class="notification">
+          <h1 class="is-size-4" style="margin-bottom: 20px">Rellene el formulario y pulse continuar para ver los resultados.</h1>
+          <form action="/form" method="post">
+
+            <label class="label">Conjunto de datos</label>
+            <div class="select" style="width: 100%; margin-bottom: 20px">
+              <select name="dataset" style="width: 100%;" required>
+                <option value="">Seleccione el conjunto</option>
+                <option value="ttt">Tic Tac Toe (986 ejemplos)</option>
+                <option value="car">Coches (1728 ejemplos)</option>
+                <option value="ex">Ejercicio boletin (10 ejemplos)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label class="label">Quorum (Un valor entero o un porcentaje del total de ejemplos)</label>
+              <div class="control">
+                <input class="input" type="number" name="quorum" placeholder="Quorum" required>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom: 20px">
+              <div class="control">
+                <label class="radio">
+                  <input type="radio" name="quorum-type" value="int" checked>
+                  Entero
+                </label>
+                <label class="radio">
+                  <input type="radio" name="quorum-type" value="percent">
+                  Porcentual
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Conjunto de entrenamiento (Porcentaje para dividir entrenamiento y prueba)</label>
+              <div class="control">
+                <input class="input" type="number" name="train" value="80" placeholder="Porcentaje de los datos para entrenamiento" required>
+              </div>
+            </div>
+
+            <div class="field" style="margin-bottom: 30px">
+              <label class="label">Suavizado Naive Bayes(K)</label>
+              <div class="control">
+                <input class="input" type="number" name="k" value="0" placeholder="Valor para la K" required>
+              </div>
+            </div>
+
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-link" type="submit">Continuar</button>
+              </div>
+              <div class="control">
+                <a class="button is-text" href="/">Atrás</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
   </body>
 </html>
