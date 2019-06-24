@@ -58,6 +58,19 @@
                 </div>
 
                 <div class="field">
+                    <label class="label">Conjunto de entrenamiento (Porcentaje para dividir entrenamiento y
+                        prueba)</label>
+                    <div class="control">
+                        <input class="input" type="number" name="train" value="80"
+                               placeholder="Porcentaje de los datos para entrenamiento" required>
+                    </div>
+                    <label class="checkbox" style="margin-top: 10px">
+                      <input type="checkbox" name="shuffle">
+                      ¿Barajar?
+                    </label>
+                </div>
+
+                <div class="field">
                     <label class="label">Quorum (Un valor entero o un porcentaje del total de ejemplos)</label>
                     <div class="control">
                         <input class="input" type="number" name="quorum" placeholder="Quorum" required>
@@ -75,20 +88,6 @@
                         </label>
                     </div>
                 </div>
-
-                <div class="field">
-                    <label class="label">Conjunto de entrenamiento (Porcentaje para dividir entrenamiento y
-                        prueba)</label>
-                    <div class="control">
-                        <input class="input" type="number" name="train" value="80"
-                               placeholder="Porcentaje de los datos para entrenamiento" required>
-                    </div>
-                    <label class="checkbox" style="margin-top: 10px">
-                      <input type="checkbox" name="shuffle">
-                      ¿Barajar?
-                    </label>
-                </div>
-
 
                 <div class="field" style="margin-bottom: 30px">
                     <label class="label">Suavizado Naive Bayes(K)</label>
