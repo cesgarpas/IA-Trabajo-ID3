@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Resultados</title>
+    <link rel="icon" type="image/png" href="../static/images/logos/flask.png">
+    <link rel="stylesheet" href="../static/css/bulma.min.css">
+    <script defer src="../static/css/all.js"></script>
+</head>
+<body>
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+            <img src="../static/images/logos/bulma-logo-white.png" width="112" height="28">
+        </a>
+
+        <a class="navbar-item" href="http://flask.pocoo.org/" style="margin-left: 10px">
+            <img src="../static/images/logos/logo-flask-recortado.png" width="24" height="40">
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu" style="margin-left: 20px">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/">
+                Inicio
+            </a>
+            <a class="navbar-item" href="/form">
+                Implementación
+            </a>
+
+            <a class="navbar-item" href="/testing">
+                Pruebas
+            </a>
+        </div>
+        <div class="navbar-end">
+            <a class="navbar-item" href="/about">
+                Acerca de..
+            </a>
+        </div>
+    </div>
+</nav>
+
+{% if vary == 'quorum' %}
+    <section class="section">
+        <div class="container is-fullhd">
+            <div class="notification" style="padding:20px">
+                <div class="columns">
+                  <div class="column">
+                    <img src="../static/graphs/quorum_hit_rate.png">
+                  </div>
+                  <div class="column">
+                    <img src="../static/graphs/quorum_leaf_count.png">
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <img src="../static/graphs/quorum_id3_hit_rate.png">
+                  </div>
+                  <div class="column">
+                    <img src="../static/graphs/quorum_trunc_hit_rate.png">
+                  </div>
+                  <div class="column">
+                    <img src="../static/graphs/quorum_none_hit_rate.png">
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% else %}
+  <section class="section">
+        <div class="container is-fullhd">
+            <div class="notification" style="padding:20px">
+                <div class="columns">
+                  <div class="column">
+                    <img src="../static/graphs/k_hit_rate.png">
+                  </div>
+                  <div class="column">
+                    <img src="../static/graphs/k_trunc_hit_rate.png">
+                  </div>
+                  <div class="column">
+                    <img src="../static/graphs/k_none_hit_rate.png">
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+
+
+<section class="section">
+    <div class="container is-fullhd">
+        <div class="notification" style="padding:20px">
+            <textarea class="textarea" name="textarea" style="width: 100%; height: 70vh" disabled>{{result}}</textarea>
+        </div>
+    </div>
+</section>
+</body>
+</html>

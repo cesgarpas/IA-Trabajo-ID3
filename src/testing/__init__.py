@@ -1,6 +1,7 @@
 from id3 import create_tree
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.patches as mpatches
 
 
 def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, quorum_quorum_type, quorum_interval, quorum_k,
@@ -144,20 +145,21 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
                    "hit rate (ratio)", "Ratio de acierto en funcion a K", "k_hit_rate",
                    list(hit_percent.values()))
         # Cuenta de hojas
-        save_graph(int(k_min), int(k_max), 1, "K (int)",
-                   "no. hojas (int)", "Número de hojas en funcion a K", "k_leaf_count",
-                   list(leaf_count2["id3"].values()), list(leaf_count2["trunc"].values()),
-                   list(leaf_count2["none"].values()))
+        # save_graph(int(k_min), int(k_max), 1, "K (int)",
+        #            "no. hojas (int)", "Número de hojas en funcion a K", "k_leaf_count",
+        #            list(leaf_count2["id3"].values()), list(leaf_count2["trunc"].values()),
+        #            list(leaf_count2["none"].values()))
+
         # Ratio de acierto por tipo de hoja
-        save_graph(int(k_min), int(k_max), 1, "K (int)",
-                   "ID3 hit rate (ratio)", "Ratio de acierto de id3 en funcion a K",
-                   "k_id3_hit_rate", list(leaf_hit_percent2["id3"].values()))
         save_graph(int(k_min), int(k_max), 1, "K (int)",
                    "truncated leafs hit rate (ratio)", "Ratio de acierto de hojas truncadas en funcion a K",
                    "k_trunc_hit_rate", list(leaf_hit_percent2["trunc"].values()))
         save_graph(int(k_min), int(k_max), 1, "K (int)",
                    "failed leafs hit rate (ratio)", "Ratio de acierto de hojas fallidas en funcion a K",
                    "k_none_hit_rate", list(leaf_hit_percent2["none"].values()))
+        # save_graph(int(k_min), int(k_max), 1, "K (int)",
+        #            "ID3 hit rate (ratio)", "Ratio de acierto de id3 en funcion a K",
+        #            "k_id3_hit_rate", list(leaf_hit_percent2["id3"].values()))
 
     return str(hit_percent) + "\n\n" + str(leaf_count) + "\n\n" + str(leaf_hit_percent)
 
@@ -182,8 +184,14 @@ def save_graph(x1, x2, x3, xlabel, ylabel, title, filename, y1, y2=None, y3=None
         ax.plot(t, y2)
     if y3 is not None:
         ax.plot(t, y3)
+        orange_patch = mpatches.Patch(color='orange', label='Truncada')
+        green_patch = mpatches.Patch(color='green', label='ID3')
+        blue_patch = mpatches.Patch(color='blue', label='None')
+        plt.legend(handles=[orange_patch, green_patch, blue_patch])
 
     ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
     ax.grid()
 
     fig.savefig("static/graphs/" + filename + ".png")
+    plt.close('all')
+

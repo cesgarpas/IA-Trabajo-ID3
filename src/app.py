@@ -50,7 +50,7 @@ def testing():
         result = test(data["dataset"], data["train"], shuffle, data["trees"], data["vary"], data["quorum_min"],
                       data["quorum_max"], data["quorum_quorum_type"], data["quorum_interval"], data["quorum_k"],
                       data["k_min"], data["k_max"], data["k_quorum"], data["k_quorum_type"])
-        return render_template('result.html', result=result)
+        return render_template('testing_result.html', result=result, vary=data["vary"])
     else:
         return render_template('testing_form.html')
 
