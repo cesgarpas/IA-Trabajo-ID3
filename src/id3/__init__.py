@@ -69,10 +69,11 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
     # ------ Ejecución ------
     # Creación del arbol
     naive_bayes = NaiveBayes(train_rows, int(k))
-    tree = recursion_base(train_rows, final_quorum, naive_bayes, [])
+    tree = recursion_base(train_rows, final_quorum, naive_bayes, [], False)
 
     # ------ Pruebas ------
     # Salida y contadores para pruebas
+    # TODO - Eliminar none
     attributes = rows[0][:-1]
     output2 = "\n\n\n================== TODAS LAS PRUEBAS ==================\n\n"
     hits_none = 0
@@ -158,6 +159,7 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
 
 def classify_helper(tree, naive_bayes, example):
     classification = tree.clasify(example)
+    # TODO - Eliminar
     if classification is None:
         classification = naive_bayes.clasify(example)
         return "No se pudo clasificar con ID3, se clasificará con Naive Bayes: " + str(classification), classification[0], "none"
@@ -167,16 +169,18 @@ def classify_helper(tree, naive_bayes, example):
         return "Clasificación por ID3: " + str(classification), classification, "id3"
 
 
-def recursion_base(rows, quorum, naive_bayes, used_attributes):
+def recursion_base(rows, quorum, naive_bayes, used_attributes, is_leaf):
     # Calculamos la entropía del conjunto inicial
     data_entropy = column_entropy(rows)
-
+    # TODO - Quitar caso base entropía
     # Vemos qué tipo de vértice tenemos que crear
-    if data_entropy == 0:               # Hoja-categoría
-        return rows[1][-1]
-    elif (len(rows) - 1) < quorum:      # Hoja-truncada
+    if (len(rows) - 1) < quorum and not is_leaf:    # Hoja-truncada
         return naive_bayes
-    else:                               # Nodo interior
+    elif data_entropy == 0:                         # Hoja-categoría clasificada
+        return rows[1][-1]
+    elif is_leaf:                                   # Hoja-categoría sin clasificar
+        return id3_clasify_leafs(rows)
+    else:                                           # Nodo interior
         return recursion_continue(rows, quorum, naive_bayes, used_attributes, data_entropy)
 
 
@@ -187,6 +191,7 @@ def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
     best_attr_values = []
     best_attr_values_data = {}
 
+    # TODO - Añadir condición de que si es el ultimo...
     # Para cada atributo
     for x in range(len(rows[0])-1):
         # Si el atributo aun no se ha usado para clasificar
@@ -207,8 +212,8 @@ def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
             for attr_value in attr_values:
                 # Extraemos los positivos y negativos para el valor del atributo
                 count = {}
-                attr_value_data = []    # Obtenemos el subconjunto del valor
-                attr_value_data.append(rows[0])
+                attr_value_data = []        # Obtenemos el subconjunto del valor
+                attr_value_data.append(rows[0]) # TODO - Simplificar con la anterior
                 for row in rows[1:]:
                     if row[x] == attr_value:
                         # Se cuenta
@@ -239,14 +244,35 @@ def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
                 best_attr_values_data = attr_values_data
 
     # Se añade el atributo elegido a los usados
-    new_used_attributes = used_attributes
+    new_used_attributes = list(used_attributes)
     new_used_attributes.append(best_attr)
 
     children = {}
-    for attr_value in best_attr_values:
-        children[attr_value] = recursion_base(best_attr_values_data[attr_value], quorum, naive_bayes, new_used_attributes)
+    if len(new_used_attributes) == (len(rows[0]) - 1):
+        for attr_value in best_attr_values:
+            children[attr_value] = recursion_base(best_attr_values_data[attr_value], quorum, naive_bayes, new_used_attributes, True)
+    else:
+        for attr_value in best_attr_values:
+            children[attr_value] = recursion_base(best_attr_values_data[attr_value], quorum, naive_bayes, new_used_attributes, False)
     return Vertex(children, best_attr)
 
+
+def id3_clasify_leafs(rows):
+    count = {}
+    for row in rows:
+        if row[-1] not in count:
+            count[row[-1]] = 1
+        else:
+            count[row[-1]] = count[row[-1]] + 1
+    keys = list(count.keys())
+
+    # Se devuelve el que más aparece, o uno aleatorio en falta
+    if count[keys[0]] > count[keys[1]]:
+        return keys[0]
+    elif count[keys[0]] < count[keys[1]]:
+        return keys[1]
+    else:
+        return random.choice(keys)
 
 def get_entropy(x, y):
     if x == 0 or y == 0:

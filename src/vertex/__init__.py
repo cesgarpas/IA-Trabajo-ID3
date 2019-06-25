@@ -1,5 +1,6 @@
 from naivebayes import NaiveBayes
 
+
 class Vertex:
 
     attribute = None
@@ -11,6 +12,7 @@ class Vertex:
 
     def clasify(self, example):                     # {atributo:valorAtributo, atributo:valorAtributo}
 
+        # TODO - Eliminar
         if self.attribute is None:
             return None
 
