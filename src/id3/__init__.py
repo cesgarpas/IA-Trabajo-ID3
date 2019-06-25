@@ -73,16 +73,12 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
 
     # ------ Pruebas ------
     # Salida y contadores para pruebas
-    # TODO - Eliminar none
     attributes = rows[0][:-1]
     output2 = "\n\n\n================== TODAS LAS PRUEBAS ==================\n\n"
-    hits_none = 0
     hits_trunc = 0
     hits_id3 = 0
-    miss_none = 0
     miss_trunc = 0
     miss_id3 = 0
-    none = 0
     trunc = 0
     id3 = 0
 
@@ -94,16 +90,10 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
 
         # Conteo de aciertos
         expected = str(row[-1])
-        classification, result, leaf = classify_helper(tree, naive_bayes, row_dict)
+        classification, result, leaf = classify_helper(tree, row_dict)
 
         # Conteo de hojas
-        if leaf == "none":
-            none += 1
-            if expected == result:
-                hits_none += 1
-            else:
-                miss_none += 1
-        elif leaf == "trunc":
+        if leaf == "trunc":
             trunc += 1
             if expected == result:
                 hits_trunc += 1
@@ -123,8 +113,8 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
 
     # ------ Salida de los resultados ------
     # Porcentaje de acierto total
-    hits = hits_id3 + hits_none + hits_trunc
-    miss = miss_id3 + miss_none + miss_trunc
+    hits = hits_id3 + hits_trunc
+    miss = miss_id3 + miss_trunc
     hit_percent = hits / (hits + miss)
 
     output += "Aciertos: " + str(hits) + "\n"
@@ -138,32 +128,23 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
     trunc_total = hits_trunc + miss_trunc
     trunc_hit_percent = 0 if trunc_total == 0 else hits_trunc / trunc_total
 
-    none_total = hits_none + miss_none
-    none_hit_percent = 0 if none_total == 0 else hits_none / none_total
-
     output += "No. Resultados hojas categoría: " + str(id3) + "\n"
     output += "Porcentaje de acierto hojas categoría: " + str(id3_hit_percent) + "\n\n"
     output += "No. Resultados hojas truncadas: " + str(trunc) + "\n"
     output += "Porcentaje de acierto hojas truncadas: " + str(trunc_hit_percent) + "\n\n"
-    output += "No. Resultados hojas fallidas: " + str(none) + "\n"
-    output += "Porcentaje de acierto hojas fallidas: " + str(none_hit_percent) + "\n\n"
 
     # Concatenación final y output
     output += output2
 
     return output, {"hits": hits, "miss": miss, "hit_percent": hit_percent,
                     "id3_count": id3, "id3_hit_percent": id3_hit_percent,
-                    "trunc_count": trunc, "trunc_hit_percent": trunc_hit_percent,
-                    "none_count": none, "none_hit_percent": none_hit_percent}
+                    "trunc_count": trunc, "trunc_hit_percent": trunc_hit_percent}
 
 
-def classify_helper(tree, naive_bayes, example):
+def classify_helper(tree, example):
     classification = tree.clasify(example)
-    # TODO - Eliminar
-    if classification is None:
-        classification = naive_bayes.clasify(example)
-        return "No se pudo clasificar con ID3, se clasificará con Naive Bayes: " + str(classification), classification[0], "none"
-    elif type(classification) is type([]):
+
+    if type(classification) is type([]):
         return "Rama truncada por el quorum, se clasificará mediante Naive Bayes: " + str(classification), classification[0], "trunc"
     else:
         return "Clasificación por ID3: " + str(classification), classification, "id3"
@@ -172,13 +153,13 @@ def classify_helper(tree, naive_bayes, example):
 def recursion_base(rows, quorum, naive_bayes, used_attributes, is_leaf):
     # Calculamos la entropía del conjunto inicial
     data_entropy = column_entropy(rows)
-    # TODO - Quitar caso base entropía
+
     # Vemos qué tipo de vértice tenemos que crear
     if (len(rows) - 1) < quorum and not is_leaf:    # Hoja-truncada
         return naive_bayes
-    elif data_entropy == 0:                         # Hoja-categoría clasificada
+    elif data_entropy == 0:                         # Hoja-categoría entropía 0
         return rows[1][-1]
-    elif is_leaf:                                   # Hoja-categoría sin clasificar
+    elif is_leaf:                                   # Hoja-categoría entropia no 0
         return id3_clasify_leafs(rows)
     else:                                           # Nodo interior
         return recursion_continue(rows, quorum, naive_bayes, used_attributes, data_entropy)
@@ -273,6 +254,7 @@ def id3_clasify_leafs(rows):
         return keys[1]
     else:
         return random.choice(keys)
+
 
 def get_entropy(x, y):
     if x == 0 or y == 0:
