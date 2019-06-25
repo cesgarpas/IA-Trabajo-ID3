@@ -19,6 +19,6 @@ print("Atributo del segundo hijo:", colorV.children['green'].attribute)
 print("Hijos del segundo hijo:", colorV.children['green'].children)
 
 
-print("Clasificación de {rojo, grande}:", colorV.clasify({"color": "red", "size": "big"}))
-print("Clasificación de {verde, grande}:", colorV.clasify({"color": "green", "size": "big"}))
-print("Clasificación de {verde, pequeño}:", colorV.clasify({"color": "green", "size": "small"}))
+print("Clasificación de {rojo, grande}:", colorV.classify({"color": "red", "size": "big"}))
+print("Clasificación de {verde, grande}:", colorV.classify({"color": "green", "size": "big"}))
+print("Clasificación de {verde, pequeño}:", colorV.classify({"color": "green", "size": "small"}))

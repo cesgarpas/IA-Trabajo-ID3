@@ -74,7 +74,7 @@ class NaiveBayes:
 
         self.cat1_prob, self.cat2_prob = cat1_prob, cat2_prob
 
-    def clasify(self, example):  # {atributo:valorAtributo, atributo:valorAtributo}
+    def classify(self, example):  # {atributo:valorAtributo, atributo:valorAtributo}
 
         cat1_final_prob, cat2_final_prob = self.cat1_prob[self.cat1], self.cat2_prob[self.cat2]
 

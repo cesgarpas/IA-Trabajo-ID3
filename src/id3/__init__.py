@@ -142,7 +142,7 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
 
 
 def classify_helper(tree, example):
-    classification = tree.clasify(example)
+    classification = tree.classify(example)
 
     if type(classification) is type([]):
         return "Rama truncada por el quorum, se clasificará mediante Naive Bayes: " + str(classification), classification[0], "trunc"
@@ -160,7 +160,7 @@ def recursion_base(rows, quorum, naive_bayes, used_attributes, is_leaf):
     elif data_entropy == 0:                         # Hoja-categoría entropía 0
         return rows[1][-1]
     elif is_leaf:                                   # Hoja-categoría entropia no 0
-        return id3_clasify_leafs(rows)
+        return id3_classify_leafs(rows)
     else:                                           # Nodo interior
         return recursion_continue(rows, quorum, naive_bayes, used_attributes, data_entropy)
 
@@ -172,7 +172,6 @@ def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
     best_attr_values = []
     best_attr_values_data = {}
 
-    # TODO - Añadir condición de que si es el ultimo...
     # Para cada atributo
     for x in range(len(rows[0])-1):
         # Si el atributo aun no se ha usado para clasificar
@@ -194,7 +193,7 @@ def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
                 # Extraemos los positivos y negativos para el valor del atributo
                 count = {}
                 attr_value_data = []        # Obtenemos el subconjunto del valor
-                attr_value_data.append(rows[0]) # TODO - Simplificar con la anterior
+                attr_value_data.append(rows[0])     # TODO - Simplificar con la anterior
                 for row in rows[1:]:
                     if row[x] == attr_value:
                         # Se cuenta
@@ -228,17 +227,26 @@ def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
     new_used_attributes = list(used_attributes)
     new_used_attributes.append(best_attr)
 
+    # Si los atributos usados son el total, se pasa valor True para clasificar por id3 en caso base
     children = {}
     if len(new_used_attributes) == (len(rows[0]) - 1):
         for attr_value in best_attr_values:
-            children[attr_value] = recursion_base(best_attr_values_data[attr_value], quorum, naive_bayes, new_used_attributes, True)
+            children[attr_value] = recursion_base(best_attr_values_data[attr_value], quorum,
+                                                  naive_bayes, new_used_attributes, True)
     else:
         for attr_value in best_attr_values:
-            children[attr_value] = recursion_base(best_attr_values_data[attr_value], quorum, naive_bayes, new_used_attributes, False)
+            children[attr_value] = recursion_base(best_attr_values_data[attr_value], quorum,
+                                                  naive_bayes, new_used_attributes, False)
+
     return Vertex(children, best_attr)
 
 
-def id3_clasify_leafs(rows):
+# ================================================================================
+# =============================== AUXILIARES =====================================
+# ================================================================================
+
+
+def id3_classify_leafs(rows):
     count = {}
     for row in rows:
         if row[-1] not in count:
