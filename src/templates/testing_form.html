@@ -58,10 +58,10 @@
                 </div>
 
                 <div class="field">
-                    <label class="label">Conjunto de entrenamiento (Porcentaje para dividir entrenamiento y
+                    <label class="label">Conjunto de entrenamiento (0-100) (Porcentaje para dividir entrenamiento y
                         prueba)</label>
                     <div class="control">
-                        <input class="input" type="number" name="train" value="80"
+                        <input class="input" type="number" name="train" value="90"
                                placeholder="Porcentaje de los datos para entrenamiento" required>
                     </div>
                     <label class="checkbox" style="margin-top: 10px">
@@ -72,7 +72,7 @@
 
                 <div class="field" style="margin-bottom: 30px">
                     <label class="label">
-                        En caso de haber marcado barajar, número de salidas para hacer media (Se crean varios arboles, se prueba y se hace la media a los resultados).
+                        En caso de haber marcado barajar, número de salidas para hacer media (>= 1) (Se crean varios arboles, se prueba y se hace la media a los resultados).
                     </label>
                     <div class="control">
                         <input class="input" type="number" name="trees" value="1" placeholder="Result outputs" required>
@@ -105,13 +105,13 @@
                     Si ha marcado "Variar Quorum" rellene los datos siguientes
                 </p>
                 <div class="field">
-                    <label class="label">Quorum mínimo</label>
+                    <label class="label">Quorum mínimo (0-100 si es porcentual)</label>
                     <div class="control">
                         <input class="input" type="number" name="quorum_min" value="0" placeholder="Quórum mínimo" required>
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label">Quorum máximo</label>
+                    <label class="label">Quorum máximo (0-100 si es porcentual)</label>
                     <div class="control">
                         <input class="input" type="number" name="quorum_max" value="100" placeholder="Quórum máximo" required>
                     </div>
@@ -159,7 +159,7 @@
                 <div class="field">
                     <label class="label">K máxima</label>
                     <div class="control">
-                        <input class="input" type="number" name="k_max" value="4" placeholder="K máxima" required>
+                        <input class="input" type="number" name="k_max" value="10" placeholder="K máxima" required>
                     </div>
                 </div>
 
