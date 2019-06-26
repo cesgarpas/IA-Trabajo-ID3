@@ -30,7 +30,7 @@ Tras la instalación, es necesario añadir la ruta de la carpeta bin de la ruta 
 
 Abrir una terminal en el directorio src de el proyecto y correr:
 ```
-pipn3 -r install requirements.txt
+pip3 install -r requirements.txt
 ``` 
 O instalar manualmente las dependencias indicadas en este.
 
