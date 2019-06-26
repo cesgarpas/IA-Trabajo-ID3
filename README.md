@@ -7,6 +7,7 @@ El trabajo trata de a partir de un valor llamado quórum y un conjunto de datos,
 ## Instalación y arranque
 ### Instalación de Graphviz
 En primer lugar es necesario instalar graphviz. La versión utilizada en el proyecto está en la carpeta raiz en un zip (graphviz-2.38.msi.zip).
+
 Tras la instalación, es necesario añadir la ruta de la carpeta bin de la ruta de instalación al PATH (C:\Program Files (x86)\Graphviz2.38\bin por defecto)
 
 ### Instalación de librerías utilizadas
