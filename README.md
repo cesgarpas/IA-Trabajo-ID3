@@ -13,7 +13,7 @@ Tras la instalación, es necesario añadir la ruta de la carpeta bin de la ruta 
 ### Instalación de librerías utilizadas
 Abrir una terminal en el directorio src de el proyecto y correr:
 ```
-python3 -r install requirements.txt
+pipn3 -r install requirements.txt
 ``` 
 O instalar manualmente las dependencias indicadas en este.
 
