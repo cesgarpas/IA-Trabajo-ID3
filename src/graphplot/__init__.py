@@ -5,11 +5,12 @@ from naivebayes import NaiveBayes
 
 count = 0
 
+
 def get_graph(dataset, quorum, quorum_type):
     try:
         global count
         count = 0
-        tree, result, info = get_results(dataset, 99.99, quorum, quorum_type, 0, True, 0)
+        tree, result, info = get_results(dataset, 99.99, quorum, quorum_type, 0, False, 0)
 
         graph = pydot.Dot(graph_type="digraph", rankdir="LR")
 
@@ -20,6 +21,7 @@ def get_graph(dataset, quorum, quorum_type):
         return True
     except:
         return False
+
 
 def recursion(vertex, graph, parent, edge_label):
     global count

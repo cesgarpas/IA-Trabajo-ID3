@@ -208,7 +208,7 @@ def recursion_continue(rows, quorum, naive_bayes, used_attributes, entropy):
                 # Extraemos los positivos y negativos para el valor del atributo
                 count = {}
                 attr_value_data = []        # Obtenemos el subconjunto del valor
-                attr_value_data.append(rows[0])     # TODO - Simplificar con la anterior
+                attr_value_data.append(rows[0])
                 for row in rows[1:]:
                     if row[x] == attr_value:
                         # Se cuenta
