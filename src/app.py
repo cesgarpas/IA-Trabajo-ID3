@@ -28,7 +28,7 @@ def form():
             shuffle = False
 
         # Llamada al algoritmo
-        result, info = get_results(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"], shuffle, 0)
+        tree, result, info = get_results(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"], shuffle, 0)
         return render_template('result.html', result=result)
     else:
         return render_template('form.html')

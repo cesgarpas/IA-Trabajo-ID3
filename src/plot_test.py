@@ -1,18 +1,53 @@
-import matplotlib
-import matplotlib.pyplot as plt
-import numpy as np
+import pydot
+from id3 import get_results
+from vertex import Vertex
+from naivebayes import NaiveBayes
 
-print(len(range(0,100,1)))
-# Data for plotting
-t = np.arange(0, 5, 1)
-s = [1,2,3,4,75]
+count = 0
 
-fig, ax = plt.subplots()
-ax.plot(t, s)
 
-ax.set(xlabel='quorum (int)', ylabel='hit rate (%/100)',
-       title='About as simple as it gets, folks')
-ax.grid()
+def start():
+    tree, result, info = get_results("ttt", 99.9, 10, "percent", 0, True, 0)
 
-fig.savefig("test.png")
-plt.show()
+    graph = pydot.Dot(graph_type="digraph", rankdir="LR")
+
+    recursion(tree, graph, None, "")
+
+    with open("static/graphs/tree.png", "wb") as png:
+        png.write(graph.create_png())
+
+
+def recursion(vertex, graph, parent, edge_label):
+    global count
+    if type(vertex) is Vertex:
+        node = pydot.Node(vertex.attribute + str(count), style="filled", fillcolor="white")
+        count += 1
+        graph.add_node(node)
+
+        if parent is not None:
+            edge = pydot.Edge(parent, node, label=edge_label)
+            graph.add_edge(edge)
+
+        for child in vertex.children:
+            recursion(vertex.children[child], graph, node, child)
+
+    elif type(vertex) is NaiveBayes:
+        node = pydot.Node("N-B" + str(count), style="filled", fillcolor="red")
+        count += 1
+        graph.add_node(node)
+
+        if parent is not None:
+            edge = pydot.Edge(parent, node, label=edge_label)
+            graph.add_edge(edge)
+
+    else:
+        node = pydot.Node(str(vertex) + str(count), style="filled", fillcolor="green")
+        count += 1
+        graph.add_node(node)
+
+        if parent is not None:
+            edge = pydot.Edge(parent, node, label=edge_label)
+            graph.add_edge(edge)
+
+
+start()

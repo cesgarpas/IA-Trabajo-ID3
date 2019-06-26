@@ -25,7 +25,7 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
             trunc_empty_count = 0
 
             for i in range(int(trees)):
-                result, info = get_results(dataset, train_percent, quorum_vary, quorum_quorum_type, quorum_k, shuffle, 0)
+                tree, result, info = get_results(dataset, train_percent, quorum_vary, quorum_quorum_type, quorum_k, shuffle, 0)
                 if info is None:
                     return None
                 hit_percent_acc += info["hit_percent"]
@@ -89,7 +89,7 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
             trunc_empty_count = 0
 
             for i in range(int(trees)):
-                result, info = get_results(dataset, train_percent, k_quorum, k_quorum_type, k_vary, shuffle, 0)
+                tree, result, info = get_results(dataset, train_percent, k_quorum, k_quorum_type, k_vary, shuffle, 0)
                 if info is None:
                     return None
                 hit_percent_acc += info["hit_percent"]

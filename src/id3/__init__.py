@@ -136,7 +136,7 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
     # Concatenación final y output
     output += output2
 
-    return output, {"hits": hits, "miss": miss, "hit_percent": hit_percent,
+    return tree, output, {"hits": hits, "miss": miss, "hit_percent": hit_percent,
                     "id3_count": id3, "id3_hit_percent": id3_hit_percent,
                     "trunc_count": trunc, "trunc_hit_percent": trunc_hit_percent}
 
@@ -145,15 +145,15 @@ def get_results(dataset, train_percent, quorum, quorum_type, k, shuffle, acc):
     if acc > 99:
         error = "Parece que los datos de entrenamiento no son suficientes para los datos de prueba."
         error += " Pruebe un porcentaje de entrenamiento mayor o a barajar el conjunto."
-        return error, None
+        return None, error, None
     # Dado que a veces no se puede clasificar, se reintenta hasta conseguirse
     try:
-        result, info = create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle)
+        tree, result, info = create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle)
     except:
         inc_acc = acc + 1
         return get_results(dataset, train_percent, quorum, quorum_type, k, shuffle, inc_acc)
 
-    return result, info
+    return tree, result, info
 
 
 def classify_helper(tree, example):
