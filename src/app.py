@@ -30,9 +30,9 @@ def form():
 
         # Llamada al algoritmo
         tree, result, info = get_results(data["dataset"], data["train"], data["quorum"], data["quorum_type"], data["k"], shuffle, 0)
-        return render_template('result.html', result=result)
+        return render_template('imp_result.html', result=result)
     else:
-        return render_template('form.html')
+        return render_template('imp_form.html')
 
 
 @app.route('/testing', methods=['GET', 'POST'])
