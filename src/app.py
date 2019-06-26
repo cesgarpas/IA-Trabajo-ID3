@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from id3 import get_results
 from testing import test
 from graphplot import get_graph
+import random
 
 app = Flask(__name__)
 
@@ -56,7 +57,8 @@ def testing():
             error += " Pruebe un porcentaje de entrenamiento mayor o a barajar el conjunto."
             return render_template('testing_result.html', result=result, vary="Fail")
         else:
-            return render_template('testing_result.html', result=result, vary=data["vary"])
+            # Retornamos el resultado y un número aleatorio para obligar a recargar imagenes
+            return render_template('testing_result.html', result=result, vary=data["vary"], id=random.randint(0, 99999))
     else:
         return render_template('testing_form.html')
 
@@ -68,7 +70,9 @@ def graph_plot():
 
         # Llamada al algoritmo
         result = get_graph(data["dataset"], data["quorum"], data["quorum_type"])
-        return render_template('graphplot_result.html', result=result)
+
+        # Retornamos el resultado y un número aleatorio para obligar a recargar imagenes
+        return render_template('graphplot_result.html', result=result, id=random.randint(0, 99999))
     else:
         return render_template('graphplot_form.html')
 
