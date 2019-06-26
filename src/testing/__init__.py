@@ -130,13 +130,22 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
                    "truncated leafs hit rate (ratio)", "Ratio de acierto de hojas truncadas en funcion a K",
                    "k_trunc_hit_rate", list(leaf_hit_percent2["trunc"].values()))
 
-    return str(hit_percent) + "\n\n" + str(leaf_count) + "\n\n" + str(leaf_hit_percent)
+    return "Ratio de acierto para cada quorum: " + str(hit_percent) + "\n\n" + "Número de hojas para cada quorum" + \
+           str(leaf_count) + "\n\n" + "Ratio de acierto por hoja para cada quorum" + str(leaf_hit_percent)
+
+
+# Creación de variables para reutilizarlas y así cerrar sus llamadas
+t, fig, ax = None, None, None
 
 
 def save_graph(x1, x2, x3, xlabel, ylabel, title, filename, y1, y2=None):
-    # Data for plotting
+    # Variables globales
+    global t, fig, ax
+
+    # Se seleccionan los intervalos
     t = np.arange(x1, x2+1, x3)
 
+    # Se empiezan a dibujar las curvas
     fig, ax = plt.subplots()
     ax.plot(t, y1)
 
@@ -146,9 +155,11 @@ def save_graph(x1, x2, x3, xlabel, ylabel, title, filename, y1, y2=None):
         blue_patch = mpatches.Patch(color='blue', label='ID3')
         plt.legend(handles=[orange_patch, blue_patch])
 
+    # Se indican las etiquetas
     ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
     ax.grid()
 
+    # Se salva la figura y se limpia la imagen de las variables para el futuro
     fig.savefig("static/graphs/" + filename + ".png")
-    plt.close('all')
+    plt.clf()
 
