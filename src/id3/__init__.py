@@ -142,7 +142,7 @@ def create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle):
 
 
 def get_results(dataset, train_percent, quorum, quorum_type, k, shuffle, acc):
-    if acc > 19:
+    if acc > 99:
         error = "Parece que los datos de entrenamiento no son suficientes para los datos de prueba."
         error += " Pruebe un porcentaje de entrenamiento mayor o a barajar el conjunto."
         return error, None

@@ -73,7 +73,9 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
     else:
         hit_percent = {}
         leaf_count = {}
+        leaf_count2 = {"id3": {}, "trunc": {}}
         leaf_hit_percent = {}
+        leaf_hit_percent2 = {"id3": {}, "trunc": {}}
         for k_vary in range(int(k_min), int(k_max) + 1):
             print("K", k_vary)
 
@@ -105,17 +107,28 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
             leaf_count[k_vary] = {
                 "id3": id3_count_acc / int(trees),
                 "trunc": trunc_count_acc / int(trees)}
+            leaf_count2["id3"][k_vary] = id3_count_acc/int(trees)
+            leaf_count2["trunc"][k_vary] = trunc_count_acc/int(trees)
             leaf_hit_percent[k_vary] = {
                 "id3": 0 if int(trees) == id3_empty_count else id3_hit_percent_acc / (
                         int(trees) - id3_empty_count),
                 "trunc": 0 if int(trees) == trunc_empty_count else trunc_hit_percent_acc / (
                             int(trees) - trunc_empty_count)}
+            leaf_hit_percent2["id3"][k_vary] = 0 if int(trees) == id3_empty_count else id3_hit_percent_acc/(
+                    int(trees)-id3_empty_count)
+            leaf_hit_percent2["trunc"][k_vary] = 0 if int(trees) == trunc_empty_count else trunc_hit_percent_acc/(
+                    int(trees)-trunc_empty_count)
 
         # =========== Gráficas ===========
         # Ratio de acierto
         save_graph(int(k_min), int(k_max), 1, "K (int)",
                    "hit rate (ratio)", "Ratio de acierto en funcion a K", "k_hit_rate",
                    list(hit_percent.values()))
+
+        # Ratio de acierto para hojas truncadas
+        save_graph(int(k_min), int(k_max), 1, "K (int)",
+                   "truncated leafs hit rate (ratio)", "Ratio de acierto de hojas truncadas en funcion a K",
+                   "k_trunc_hit_rate", list(leaf_hit_percent2["trunc"].values()))
 
     return str(hit_percent) + "\n\n" + str(leaf_count) + "\n\n" + str(leaf_hit_percent)
 
