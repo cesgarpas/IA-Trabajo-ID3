@@ -46,8 +46,7 @@ Esto arrancará el servidor en 127.0.0.1:5000 por defecto
 
 ## URLs relevantes:
 
- * http://flask.pocoo.org/docs/1.0/tutorial/ - Flask tutorial with form examples
- * https://github.com/cgpcsjcmp/flask-cesargp - Flask example
+ * http://flask.pocoo.org/docs/1.0/ - Flask
  * https://bulma.io/ - Bulma
  * https://matplotlib.org/ - Matplotlib
  * https://www.graphviz.org/ - Graphviz
