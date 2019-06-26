@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from id3 import get_results
 from testing import test
+from graphplot import get_graph
 
 app = Flask(__name__)
 
@@ -60,4 +61,14 @@ def testing():
         return render_template('testing_form.html')
 
 
+@app.route('/graph', methods=['GET', 'POST'])
+def graph_plot():
+    if request.method == 'POST':
+        data = request.form.to_dict()
+
+        # Llamada al algoritmo
+        result = get_graph(data["dataset"], data["quorum"], data["quorum_type"])
+        return render_template('graphplot_result.html', result=result)
+    else:
+        return render_template('graphplot_form.html')
 
