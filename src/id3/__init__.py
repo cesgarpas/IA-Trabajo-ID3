@@ -147,11 +147,19 @@ def get_results(dataset, train_percent, quorum, quorum_type, k, shuffle, acc):
         error += " Pruebe un porcentaje de entrenamiento mayor o a barajar el conjunto."
         return None, error, None
     # Dado que a veces no se puede clasificar, se reintenta hasta conseguirse
-    try:
-        tree, result, info = create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle)
-    except:
-        inc_acc = acc + 1
-        return get_results(dataset, train_percent, quorum, quorum_type, k, shuffle, inc_acc)
+    if shuffle:
+        try:
+            tree, result, info = create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle)
+        except:
+            inc_acc = acc + 1
+            return get_results(dataset, train_percent, quorum, quorum_type, k, shuffle, inc_acc)
+    else:
+        try:
+            tree, result, info = create_tree(dataset, train_percent, quorum, quorum_type, k, shuffle)
+        except:
+            error = "Parece que los datos de entrenamiento no son suficientes para los datos de prueba."
+            error += " Pruebe un porcentaje de entrenamiento mayor o a barajar el conjunto."
+            return None, error, None
 
     return tree, result, info
 

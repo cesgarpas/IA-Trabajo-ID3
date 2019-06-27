@@ -60,7 +60,7 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
                    list(hit_percent.values()))
         # Cuenta de hojas
         save_graph(int(quorum_min), int(quorum_max), int(quorum_interval), "quorum (" + quorum_quorum_type + ")",
-                   "no. hojas (int)", "Número de clasificaciones por tipo de hoja", "quorum_leaf_count",
+                   "no. clasificaciones (int)", "Número de clasificaciones por tipo de hoja", "quorum_leaf_count",
                    list(leaf_count2["id3"].values()), list(leaf_count2["trunc"].values()))
         # Ratio de acierto por tipo de hoja
         save_graph(int(quorum_min), int(quorum_max), int(quorum_interval), "quorum (" + quorum_quorum_type + ")",
