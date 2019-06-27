@@ -60,7 +60,7 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
                    list(hit_percent.values()))
         # Cuenta de hojas
         save_graph(int(quorum_min), int(quorum_max), int(quorum_interval), "quorum (" + quorum_quorum_type + ")",
-                   "no. hojas (int)", "Número de hojas en funcion al quorum", "quorum_leaf_count",
+                   "no. hojas (int)", "Número de clasificaciones por tipo de hoja", "quorum_leaf_count",
                    list(leaf_count2["id3"].values()), list(leaf_count2["trunc"].values()))
         # Ratio de acierto por tipo de hoja
         save_graph(int(quorum_min), int(quorum_max), int(quorum_interval), "quorum (" + quorum_quorum_type + ")",
@@ -130,8 +130,8 @@ def test(dataset, train_percent, shuffle, trees, vary, quorum_min, quorum_max, q
                    "truncated leafs hit rate (ratio)", "Ratio de acierto de hojas truncadas en funcion a K",
                    "k_trunc_hit_rate", list(leaf_hit_percent2["trunc"].values()))
 
-    return "Ratio de acierto para cada quorum: " + str(hit_percent) + "\n\n" + "Número de hojas para cada quorum" + \
-           str(leaf_count) + "\n\n" + "Ratio de acierto por hoja para cada quorum" + str(leaf_hit_percent)
+    return "Ratio de acierto para cada K: " + str(hit_percent) + "\n\n" + "Número de hojas para cada K" + \
+           str(leaf_count) + "\n\n" + "Ratio de acierto por hoja para cada K" + str(leaf_hit_percent)
 
 
 # Creación de variables para reutilizarlas y así cerrar sus llamadas

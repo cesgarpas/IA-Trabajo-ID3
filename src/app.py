@@ -55,7 +55,7 @@ def testing():
         if result is None:
             error = "Parece que los datos de entrenamiento no son suficientes para los datos de prueba."
             error += " Pruebe un porcentaje de entrenamiento mayor o a barajar el conjunto."
-            return render_template('testing_result.html', result=result, vary="Fail")
+            return render_template('testing_result.html', result=error, vary="Fail")
         else:
             # Retornamos el resultado y un número aleatorio para obligar a recargar imagenes
             return render_template('testing_result.html', result=result, vary=data["vary"], id=random.randint(0, 99999))
